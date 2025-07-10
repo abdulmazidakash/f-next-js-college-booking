@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "daisyui";
+
 
 @theme inline {
   --color-button-bg: #DA202F;
