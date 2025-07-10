@@ -54,14 +54,14 @@ export default function Navbar() {
         ) : status === 'authenticated' ? (
           <div className="flex items-center list-none gap-2">
             <li>
-              {/* <Image
-                src={ true || '/assets/default-avatar.png'}
+              <Image
+                src={session?.user?.image || '/assets/default-avatar.png'}
                 width={40}
                 height={40}
                 alt="user-logo"
                 className="rounded-full"
                 priority
-              /> */}
+              />
             </li>
             <li 
 			// onClick={() => signOut()} 
@@ -73,7 +73,6 @@ export default function Navbar() {
             <Link href="/login" className="btn btn-warning btn-soft mr-2">Login</Link>
           </>
         )}
-        <a className="btn btn-outline">Appointment</a>
       </div>
     </div>
   );
