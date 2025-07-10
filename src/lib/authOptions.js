@@ -61,7 +61,7 @@ export const authOptions = {
 	},
 	callbacks: {
 		async signIn({ user, account, profile, email, credentials }) {
-			console.log({user, account, profile, email, credentials});
+			console.log('From sign in callback---->',{user, account, profile, email, credentials});
 		if(account){
 			const { providerAccountId, provider } = account;
 			const { email: user_email, image, name} = user;
