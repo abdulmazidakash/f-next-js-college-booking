@@ -28,10 +28,10 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-8">
+    <form onSubmit={handleSubmit} className="w-full max-w-lg bg-section-bg rounded-lg shadow p-4 space-y-4 border border-gray-300">
       <label className="form-control w-full">
         <div className="label w-full">
-          <span className="label-text font-bold">Name</span>
+          <span className="label-text font-bold my-2">Name</span>
         </div>
         <input
           type="text"
@@ -44,7 +44,7 @@ export default function RegisterForm() {
 
       <label className="form-control w-full">
         <div className="label w-full">
-          <span className="label-text font-bold">Email</span>
+          <span className="label-text font-bold my-2">Email</span>
         </div>
         <input
           type="email"
@@ -57,7 +57,7 @@ export default function RegisterForm() {
 
       <label className="form-control w-full">
         <div className="label w-full">
-          <span className="label-text font-bold">Password</span>
+          <span className="label-text font-bold my-2">Password</span>
         </div>
         <input
           type="password"
@@ -71,13 +71,13 @@ export default function RegisterForm() {
       {/* <button type="submit" className="w-full h-12 bg-orange-500 text-white font-bold">
        
       </button> */}
-	  <button className="btn btn-outline btn-success w-full"> Sign Up</button>
+	  <button className="w-full btn  bg-button-bg mt-4 text-white hover:bg-white hover:text-black font-bold"> Sign Up</button>
 
       <p className="text-center">Or Sign In with</p>
       <SocialLogin />
       <p className="text-center">
         Already have an account?{" "}
-        <Link href="/login" className="text-orange-500 font-bold">
+        <Link href="/login" className="bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-bold">
           Login
         </Link>
       </p>

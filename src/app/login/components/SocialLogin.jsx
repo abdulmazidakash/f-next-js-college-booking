@@ -4,6 +4,8 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 export default function SocialLogin() {
   const router = useRouter();
@@ -25,19 +27,19 @@ export default function SocialLogin() {
       {/* GitHub */}
       <button
         onClick={() => handleSocialLogin('github')}
-        className="btn bg-black text-white border-black"
+        className="btn text-2xl rounded-full p-2 shadow"
       >
         {/* GitHub SVG */}
-        Login with GitHub
+        <FaGithub />
       </button>
 
       {/* Google */}
       <button
         onClick={() => handleSocialLogin('google')}
-        className="btn bg-white text-black border-[#e5e5e5]"
+        className="btn text-2xl rounded-full p-2 shadow"
       >
         {/* Google SVG */}
-        Login with Google
+        <FcGoogle />
       </button>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaSchoolFlag } from "react-icons/fa6";
@@ -64,13 +64,13 @@ export default function Navbar() {
               />
             </li>
             <li 
-			// onClick={() => signOut()} 
-			className="btn btn-error mr-2">Logout</li>
+			onClick={() => signOut()} 
+			className="btn hover:bg-button-bg  text-button-bg hover:text-white  mr-2">Logout</li>
           </div>
         ) : (
           <>
             {/* <Link href="/register" className="btn btn-error btn-soft">Register</Link> */}
-            <Link href="/login" className="btn btn-warning btn-soft mr-2">Login</Link>
+            <Link href="/login" className="btn hover:bg-button-bg  text-button-bg hover:text-white  mr-2">Login</Link>
           </>
         )}
       </div>
