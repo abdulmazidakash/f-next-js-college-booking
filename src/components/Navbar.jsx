@@ -1,14 +1,15 @@
 'use client';
 
-// import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaSchoolFlag } from "react-icons/fa6";
+
 export default function Navbar() {
-//   const { data: session, status } = useSession();
-//   console.log('navbar session --->', session);
-// const {status} = useSession();
-const status = 'authenticated';
+
+  const { data: session, status } = useSession();
+  console.log('navbar session --->', session);
+
   const navMenu = () => (
     <>
       <li><Link href="/">Home</Link></li>

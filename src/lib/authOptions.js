@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { loginUser } from "@/app/actions/auth/loginUser";
-import dbConnect, { servicesObj } from "./dbConnect";
+import dbConnect, { collectionNameObject } from "./dbConnect";
 
 
 export const authOptions = {
@@ -65,7 +65,7 @@ export const authOptions = {
 		if(account){
 			const { providerAccountId, provider } = account;
 			const { email: user_email, image, name} = user;
-			const userCollection = dbConnect(servicesObj.usersCollection);
+			const userCollection = dbConnect(collectionNameObject.usersCollection);
 			const isExistedUser = await userCollection.findOne({providerAccountId})
 			if(!isExistedUser){
 				const payload = { providerAccountId, provider, email:user_email, image, name};
