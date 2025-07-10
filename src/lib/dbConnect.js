@@ -1,6 +1,7 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 export const collectionNameObject = {
 	collegeCollection: 'college_name',
+	usersCollection: 'college_user',
 }
 export default function dbConnect(collectionName) {
 	const uri = process.env.MONGODB_URI;
