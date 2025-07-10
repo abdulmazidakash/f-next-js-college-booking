@@ -4,7 +4,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaSchoolFlag } from "react-icons/fa6";
-
 export default function Navbar() {
 //   const { data: session, status } = useSession();
 //   console.log('navbar session --->', session);
@@ -13,10 +12,9 @@ const status = 'authenticated';
   const navMenu = () => (
     <>
       <li><Link href="/">Home</Link></li>
-      <li><Link href="/about">About</Link></li>
-      <li><Link href="/services">Services</Link></li>
-      <li><Link href="/blog">Blog</Link></li>
-      <li><Link href="/my-bookings">My Bookings</Link></li>
+      <li><Link href="/about">Colleges</Link></li>
+      <li><Link href="/services">Admission</Link></li>
+      <li><Link href="/blog">My College</Link></li>
     </>
   );
 
@@ -54,14 +52,14 @@ const status = 'authenticated';
         ) : status === 'authenticated' ? (
           <div className="flex items-center list-none gap-2">
             <li>
-              <Image
+              {/* <Image
                 src={ true || '/assets/default-avatar.png'}
                 width={40}
                 height={40}
                 alt="user-logo"
                 className="rounded-full"
                 priority
-              />
+              /> */}
             </li>
             <li 
 			// onClick={() => signOut()} 

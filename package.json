@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "mongodb": "^6.17.0",
     "next": "15.3.5",
     "next-auth": "^4.24.11",
     "postcss": "^8.5.6",
