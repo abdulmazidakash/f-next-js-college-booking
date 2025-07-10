@@ -12,9 +12,9 @@ const status = 'authenticated';
   const navMenu = () => (
     <>
       <li><Link href="/">Home</Link></li>
-      <li><Link href="/about">Colleges</Link></li>
-      <li><Link href="/services">Admission</Link></li>
-      <li><Link href="/blog">My College</Link></li>
+      <li><Link href="/college">Colleges</Link></li>
+      <li><Link href="/admission">Admission</Link></li>
+      <li><Link href="/my-college">My College</Link></li>
     </>
   );
 

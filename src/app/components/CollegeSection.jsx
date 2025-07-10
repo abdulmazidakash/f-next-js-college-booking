@@ -1,11 +1,11 @@
-import dbConnect, { collegeObject } from '@/lib/dbConnect';
+import dbConnect, { collectionNameObject } from '@/lib/dbConnect';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 export default async function CollegeSection() {
 
-	const serviceCollection = dbConnect(collegeObject.collegeCollection);
+	const serviceCollection = dbConnect(collectionNameObject.collegeCollection);
 	const data = await serviceCollection.find({}).toArray();
 
 	console.log('database data--->',data);
@@ -27,7 +27,7 @@ export default async function CollegeSection() {
 						</div>
 						<div className='flex gap-4 items-center'>
 						<p>Price: ${item.price}</p>
-							<Link href={`/services/${item._id}`} className='text-orange-500'> <FaArrowUpRightFromSquare/> </Link>
+							<Link href={`/college/${item._id}`} className='text-orange-500'> <FaArrowUpRightFromSquare/> </Link>
 						</div>
 					</div>
 				</div>

@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
-export const collegeObject = {
+export const collectionNameObject = {
 	collegeCollection: 'college_name',
 }
 export default function dbConnect(collectionName) {
