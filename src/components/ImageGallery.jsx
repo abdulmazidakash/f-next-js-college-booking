@@ -1,7 +1,7 @@
 "use client";
 
 export default function ImageGallery() {
-  const images = ["/grad1.jpg", "/grad2.jpg", "/grad3.jpg"]; // Add to public/images/
+  const images = ["https://i.ibb.co/YhGnZz2/college1.jpg", "https://i.ibb.co/YhGnZz2/college1.jpg", "https://i.ibb.co/YhGnZz2/college1.jpg"]; // Add to public/images/
   return (
     <section className="py-6 bg-gray-100">
       <h2 className="text-2xl font-bold mb-4">Graduate Gallery</h2>

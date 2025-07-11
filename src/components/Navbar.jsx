@@ -16,6 +16,7 @@ export default function Navbar() {
       <li><Link href="/colleges">Colleges</Link></li>
       <li><Link href="/admission">Admission</Link></li>
       <li><Link href="/my-college">My College</Link></li>
+      <li><Link href="/add-college">Add College</Link></li>
     </>
   );
 
@@ -37,7 +38,7 @@ export default function Navbar() {
           </ul>
         </div>
         <Link href="/" className="btn btn-ghost text-button-bg text-2xl">
-		<FaSchoolFlag />
+		<FaSchoolFlag />College Booking
         </Link>
       </div>
 
