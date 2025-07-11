@@ -1,51 +1,77 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 import { registerUser } from "@/app/actions/auth/registerUser";
 import SocialLogin from "@/app/login/components/SocialLogin";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
- 
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
+    const university = form.university.value;
+    const address = form.address.value;
+    const imageFile = form.image.files[0];
 
-    const payload = { name, email, password };
-    
-    const response = await registerUser(payload);
-	console.log('register response', response);
-    
-    if (response.acknowledged === true) {
-      alert("Registration successful! ✅", { position: "top-center" });
-      form.reset(); // Clear the form
+    let imageBase64 = "";
+
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        imageBase64 = reader.result;
+
+        await submitData({ name, email, password, university, address, image: imageBase64 }, form);
+      };
+      reader.readAsDataURL(imageFile);
     } else {
-      alert(response.message || "Registration failed ❌", { position: "top-center" });
+      await submitData({ name, email, password, university, address, image: "" }, form);
+    }
+  };
+
+  const submitData = async (payload, form) => {
+    const response = await registerUser(payload);
+    console.log("register response", response);
+    setIsSubmitting(false);
+
+    if (response?.acknowledged === true) {
+      alert("✅ Registration successful!");
+      router.push('/');
+      form.reset();
+    } else {
+      alert(response?.message || "❌ Registration failed");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-lg bg-section-bg rounded-lg shadow p-4 space-y-4 border border-gray-300">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-lg  p-6 sm:p-8 bg-section-bg rounded-lg shadow  space-y-4 border border-gray-300"
+    >
+      <h2 className="text-xl bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-bold text-center mb-4">Create Your Account</h2>
+
+      {/* Name */}
       <label className="form-control w-full">
-        <div className="label w-full">
-          <span className="label-text font-bold my-2">Name</span>
-        </div>
+        <span className="label-text font-medium mb-1">Name</span>
         <input
           type="text"
+          name="name"
           placeholder="Enter your name"
           className="input input-bordered w-full"
-          name="name"
           required
         />
       </label>
 
+      {/* Email */}
       <label className="form-control w-full">
-        <div className="label w-full">
-          <span className="label-text font-bold my-2">Email</span>
-        </div>
+        <span className="label-text font-medium mb-1">Email</span>
         <input
           type="email"
           name="email"
@@ -55,10 +81,9 @@ export default function RegisterForm() {
         />
       </label>
 
+      {/* Password */}
       <label className="form-control w-full">
-        <div className="label w-full">
-          <span className="label-text font-bold my-2">Password</span>
-        </div>
+        <span className="label-text font-medium mb-1">Password</span>
         <input
           type="password"
           name="password"
@@ -68,16 +93,61 @@ export default function RegisterForm() {
         />
       </label>
 
-      {/* <button type="submit" className="w-full h-12 bg-orange-500 text-white font-bold">
-       
-      </button> */}
-	  <button className="w-full btn  bg-button-bg mt-4 text-white hover:bg-white hover:text-black font-bold"> Sign Up</button>
+      {/* University */}
+      <label className="form-control w-full">
+        <span className="label-text font-medium mb-1">University</span>
+        <input
+          type="text"
+          name="university"
+          placeholder="Enter your university"
+          className="input input-bordered w-full"
+          required
+        />
+      </label>
 
-      <p className="text-center">Or Sign In with</p>
+      {/* Address */}
+      <label className="form-control w-full">
+        <span className="label-text font-medium mb-1">Address</span>
+        <input
+          type="text"
+          name="address"
+          placeholder="Enter your address"
+          className="input input-bordered w-full"
+          required
+        />
+      </label>
+
+      {/* Image Upload */}
+      <label className="form-control w-full">
+        <span className="label-text font-medium mb-1">Profile Image</span>
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          className="file-input file-input-bordered w-full"
+        />
+      </label>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full btn  bg-button-bg mt-4 text-white hover:bg-white hover:text-black font-bold"
+      >
+        {isSubmitting ? "Signing Up..." : "Sign Up"}
+      </button>
+
+      {/* Social Login */}
+      <p className="text-center text-sm mt-3">Or Sign Up with</p>
       <SocialLogin />
-      <p className="text-center">
+
+      {/* Already have account */}
+      <p className="text-center mt-4 text-sm">
         Already have an account?{" "}
-        <Link href="/login" className="bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-bold">
+        <Link
+          href="/login"
+          className="bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-bold"
+        >
           Login
         </Link>
       </p>

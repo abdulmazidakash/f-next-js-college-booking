@@ -40,27 +40,30 @@ export default function LoginForm() {
 	}
   };
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-lg bg-section-bg rounded-lg shadow p-4 space-y-4 border border-gray-300">
+    <form 
+    onSubmit={handleSubmit} 
+    className="w-full max-w-lg  p-6 sm:p-8 bg-section-bg rounded-lg shadow  space-y-4 border border-gray-300">
+          <h2 className="text-xl bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-bold text-center mb-4">Login Your Account</h2>
+     {/* Email */}
       <label className="form-control w-full">
-        <div className="label w-full">
-          <span className="label-text  font-bold my-2">Email</span>
-        </div>
+        <span className="label-text font-medium mb-1">Email</span>
         <input
-          type="text"
+          type="email"
           name="email"
-          placeholder="Type here"
+          placeholder="Enter your email"
           className="input input-bordered w-full"
+          required
         />
       </label>
+      {/* Password */}
       <label className="form-control w-full">
-        <div className="label w-full">
-          <span className="label-text font-bold my-2">Password</span>
-        </div>
+        <span className="label-text font-medium mb-1">Password</span>
         <input
           type="password"
           name="password"
-          placeholder="Type here"
+          placeholder="Enter your password"
           className="input input-bordered w-full"
+          required
         />
       </label>
       <button className="w-full btn  bg-button-bg mt-4 text-white hover:bg-white hover:text-black font-bold">
