@@ -1,10 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CollegeCard from "./CollegeCard";
 
-export default function CollegeSection({ colleges }) {
+export default function CollegeSection() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [colleges, setColleges] = useState([]);
+
+  useEffect(() => {
+    async function fetchColleges() {
+      const res = await fetch("/api/colleges");
+      const data = await res.json();
+      if (data && !data.error) setColleges(data);
+    }
+    fetchColleges();
+  }, []);
 
   const filteredColleges = colleges.filter((college) =>
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
