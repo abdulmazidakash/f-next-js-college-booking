@@ -13,7 +13,7 @@ export default function Navbar() {
   const navMenu = () => (
     <>
       <li><Link href="/">Home</Link></li>
-      <li><Link href="/college">Colleges</Link></li>
+      <li><Link href="/colleges">Colleges</Link></li>
       <li><Link href="/admission">Admission</Link></li>
       <li><Link href="/my-college">My College</Link></li>
     </>
