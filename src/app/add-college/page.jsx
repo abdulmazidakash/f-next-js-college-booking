@@ -1,8 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function AddCollege() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     image: "",
@@ -32,7 +35,6 @@ export default function AddCollege() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage("College added successfully!");
         setFormData({
           name: "",
           image: "",
@@ -42,6 +44,8 @@ export default function AddCollege() {
           events: "",
           sports: "",
         });
+        toast.success("College added successfully!");
+        router.push("/colleges");
       } else {
         setMessage(`Error: ${data.error || "Failed to add college"}`);
       }
@@ -53,9 +57,9 @@ export default function AddCollege() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold mb-4">Add New College</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center">Add New College</h1>
       {message && <p className="mb-4 text-green-600">{message}</p>}
-      <form onSubmit={handleSubmit} className="max-w-lg">
+      <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Name</label>
           <input
