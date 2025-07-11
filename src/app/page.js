@@ -4,7 +4,10 @@ import ResearchLinks from "@/components/ResearchLinks";
 import ReviewSection from "@/components/ReviewSection";
 import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
 
-export default function Home({ colleges }) {
+export default async function Home() {
+  const serviceCollection = dbConnect(collectionNameObject.collegeCollection);
+  const colleges = await serviceCollection.find({}).toArray();
+
   return (
     <div className="w-11/12 mx-auto">
       <CollegeSection colleges={colleges} />
@@ -13,10 +16,4 @@ export default function Home({ colleges }) {
       <ReviewSection />
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const serviceCollection = dbConnect(collectionNameObject.collegeCollection);
-  const colleges = await serviceCollection.find({}).toArray();
-  return { props: { colleges: JSON.parse(JSON.stringify(colleges)) } };
 }
