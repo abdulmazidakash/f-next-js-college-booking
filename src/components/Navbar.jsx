@@ -8,7 +8,7 @@ import { FaSchoolFlag } from "react-icons/fa6";
 export default function Navbar() {
 
   const { data: session, status } = useSession();
-  console.log('navbar session --->', session);
+  // console.log('navbar session --->', session);
 
   const navMenu = () => (
     <>
@@ -16,7 +16,6 @@ export default function Navbar() {
       <li><Link href="/college">Colleges</Link></li>
       <li><Link href="/admission">Admission</Link></li>
       <li><Link href="/my-college">My College</Link></li>
-      <li><Link href="/register">Register</Link></li>
     </>
   );
 
@@ -53,16 +52,19 @@ export default function Navbar() {
           <span className="loading loading-spinner loading-md"></span>
         ) : status === 'authenticated' ? (
           <div className="flex items-center list-none gap-2">
-            <li>
+            <Link
+            href="/profile"
+            >
               <Image
+                title={session?.user?.name}
                 src={session?.user?.image || '/assets/default-avatar.png'}
                 width={40}
                 height={40}
                 alt="user-logo"
-                className="rounded-full"
+                className="rounded-full border border-gray-300 transition-all duration-200 cursor-pointer"
                 priority
               />
-            </li>
+            </Link>
             <li 
 			onClick={() => signOut()} 
 			className="btn hover:bg-button-bg  text-button-bg hover:text-white  mr-2">Logout</li>
