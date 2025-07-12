@@ -6,7 +6,7 @@ import banner from "../../public/banner.png";
 
 const Header = ({ searchTerm, setSearchTerm }) => {
   return (
-    <section className="bg-gradient-to-r from-pink-100 via-white to-purple-100 py-10 px-4 md:px-12 rounded-lg mt-10 shadow-lg">
+    <section className="w-11/12 mx-auto  px-4 md:px-12">
       <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
         <div className="w-full lg:w-1/2">
           <Image
@@ -44,7 +44,7 @@ const Header = ({ searchTerm, setSearchTerm }) => {
             </button>
           </div>
 
-          <div className="flex gap-6 mt-6">
+          <div className="flex gap-6 mt-6 pb-4">
             <div className="flex items-center gap-2 text-red-600 font-bold">
               <FaUserGraduate /> 59k+ Students
             </div>

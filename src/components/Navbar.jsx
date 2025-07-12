@@ -21,7 +21,7 @@ export default function Navbar() {
   );
 
   return (
-    <div className="navbar bg-navbar-bg shadow-sm">
+    <div className="navbar w-11/12 mx-auto py-4">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -68,7 +68,7 @@ export default function Navbar() {
             </Link>
             <li 
 			onClick={() => signOut()} 
-			className="btn hover:bg-button-bg  text-button-bg hover:text-white  mr-2">Logout</li>
+			className="btn bg-button-bg  text-white  mr-2">Logout</li>
           </div>
         ) : (
           <>

@@ -12,12 +12,17 @@ export default function Home() {
     const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="w-11/12 mx-auto">
+    <div>
+      <div className="bg-gradient-to-r from-pink-100 via-white to-purple-100">
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      </div>
+      <div className="w-11/12 mx-auto">
+
       <CollegeSection searchTerm={searchTerm} />
       <ImageGallery />
       <ResearchLinks />
       <ReviewSection />
+    </div>
     </div>
   );
 }

@@ -28,8 +28,10 @@ export default function RootLayout({ children }) {
       >
         <NextAuthProvider>
           <Toaster />
-          <Navbar />
-          <main className="container mx-auto px-4 my-14">
+          <div className="bg-navbar-bg shadow-sm">
+            <Navbar />
+          </div>
+          <main className="">
             {children}
           </main>
           <Footer/>
