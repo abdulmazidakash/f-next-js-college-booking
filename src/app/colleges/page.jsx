@@ -4,8 +4,8 @@ import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
 export default async function Colleges() {
   let colleges = [];
   try {
-    const serviceCollection = dbConnect(collectionNameObject.collegeCollection);
-    colleges = await serviceCollection.find({}).toArray();
+    const collegeCollection = dbConnect(collectionNameObject.collegeCollection);
+    colleges = await collegeCollection.find({}).toArray();
   } catch (error) {
     console.error("college data fetch error:", error);
   }
