@@ -1,9 +1,11 @@
+// app/layout.js
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import NextAuthProvider from "@/providers/NextAuthProvider";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer";
+import { Suspense } from "react"; // Import Suspense from React
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +34,12 @@ export default function RootLayout({ children }) {
             <Navbar />
           </div>
           <main className="">
-            {children}
+            {/* Wrap children in Suspense to handle client-side components
+                that cannot be pre-rendered on the server (e.g., those using useSearchParams).
+                This defers rendering until the client side. */}
+            <Suspense fallback={<div>Loading page...</div>}> {/* You can customize the fallback UI */}
+              {children}
+            </Suspense>
           </main>
           <Footer/>
         </NextAuthProvider>
@@ -40,3 +47,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+// 

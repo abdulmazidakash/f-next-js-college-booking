@@ -11,22 +11,28 @@ export default async function CollegeDetailsPage({ params }) {
     if (!ObjectId.isValid(id)) {
       notFound(); // Handle invalid ID format
     }
-    // --- FIX: Await dbConnect here ---
     const collegeCollection = await dbConnect(collectionNameObject.collegeCollection);
-    college = await collegeCollection.findOne({ _id: new ObjectId(id) });
+    const fetchedCollege = await collegeCollection.findOne({ _id: new ObjectId(id) });
 
-    if (!college) {
+    if (!fetchedCollege) {
       notFound(); // Handle college not found
     }
+
+    // --- FIX: Convert _id to string for the single college object ---
+    college = {
+      ...fetchedCollege,
+      _id: fetchedCollege._id.toString()
+    };
+
   } catch (error) {
     console.error("Error fetching college details:", error);
     notFound(); // Fallback for database errors
   }
 
   // Ensure arrays are handled gracefully
+  // Use 'college' which now has _id as string
   const events = college.events && Array.isArray(college.events) ? college.events : [];
   const sports = college.sports && Array.isArray(college.sports) ? college.sports : [];
-  // Assuming researchPapers is an array of objects with a 'title' and 'link'
   const researchPapers = college.researchPapers && Array.isArray(college.researchPapers) ? college.researchPapers : [];
 
   return (
@@ -49,7 +55,7 @@ export default async function CollegeDetailsPage({ params }) {
           </p>
           {college.admissionProcessDetails && (
             <div className="text-gray-700 leading-relaxed mb-4">
-              <p>{college.admissionProcessDetails}</p> {/* Add a field for detailed admission process in your DB */}
+              <p>{college.admissionProcessDetails}</p>
             </div>
           )}
 
@@ -68,7 +74,6 @@ export default async function CollegeDetailsPage({ params }) {
           {researchPapers.length > 0 ? (
             <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
               {researchPapers.map((paper, index) => (
-                // Ensure paper.link and paper.title exist in your data
                 <li key={index}>
                   <a href={paper.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                     {paper.title || `Research Paper ${index + 1}`}

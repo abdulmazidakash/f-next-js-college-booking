@@ -11,7 +11,7 @@ export default function ImageGallery() {
   ];
 
   return (
-    <section className="py-10 px-4 bg-gradient-to-br from-purple-100 via-white to-pink-100 rounded-lg mt-12 shadow-lg">
+    <section className="py-10  mt-12">
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
           🎓 Graduate Group Gallery

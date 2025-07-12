@@ -12,7 +12,7 @@ export const collectionNameObject = {
 };
 
 export default async function dbConnect(collectionName) {
-    const uri = process.env.NEXT_PUBLIC_MONGODB_URI;
+    const uri = process.env.MONGODB_URI;
     const dbName = process.env.DB_NAME;
 
     if (!uri) {
