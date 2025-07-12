@@ -1,40 +1,103 @@
+// app/colleges/[id]/page.js
 import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
-import { ObjectId } from "mongodb"; // Import ObjectId
+import { ObjectId } from "mongodb";
+import { notFound } from "next/navigation";
 
-export default async function CollegeDetails({ params }) {
-  // Use IIFE to await and handle params
-  const college = await (async () => {
-    let collegeData = {};
-    try {
-      const { id } = params; // Destructure id from params
-      const serviceCollection = dbConnect(collectionNameObject.collegeCollection);
-      collegeData = await serviceCollection.findOne({ _id: new ObjectId(id) });
-      if (collegeData) collegeData = JSON.parse(JSON.stringify(collegeData)); // Convert BSON to JSON if needed
-    } catch (error) {
-      console.error("Error fetching college details:", error);
-      if (error.name === "BSONError") {
-        return { error: "Invalid college ID" };
-      }
+export default async function CollegeDetailsPage({ params }) {
+  const { id } = params;
+  let college = null;
+
+  try {
+    if (!ObjectId.isValid(id)) {
+      notFound(); // Handle invalid ID format
     }
-    return collegeData;
-  })();
+    const collegeCollection = dbConnect(collectionNameObject.collegeCollection);
+    college = await collegeCollection.findOne({ _id: new ObjectId(id) });
 
-  if (!college || college.error) {
-    return <div className="container mx-auto px-4 py-6">{college?.error || "College not found"}</div>;
+    if (!college) {
+      notFound(); // Handle college not found
+    }
+  } catch (error) {
+    console.error("Error fetching college details:", error);
+    notFound(); // Fallback for database errors
   }
 
+  // Ensure arrays are handled gracefully
+  const events = college.events && Array.isArray(college.events) ? college.events : [];
+  const sports = college.sports && Array.isArray(college.sports) ? college.sports : [];
+  const researchPapers = college.researchPapers && Array.isArray(college.researchPapers) ? college.researchPapers : [];
+
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">{college.name || "College Not Found"}</h1>
-      <img
-        src={college.image || "/default.jpg"}
-        alt={college.name || "College Image"}
-        className="w-full h-64 object-cover rounded-lg my-4"
-      />
-      <p>Admission Process: {college.admissionProcess || "TBA"}</p>
-      <p>Events: {college.events ? college.events.join(", ") : "No events"}</p>
-      <p>Research Works: {college.researchCount || "N/A"}</p>
-      <p>Sports: {college.sports ? college.sports.join(", ") : "No sports"}</p>
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="bg-white rounded-lg shadow-xl overflow-hidden">
+        <img
+          src={college.image || "/default.jpg"}
+          alt={college.name}
+          className="w-full h-80 object-cover"
+        />
+        <div className="p-6">
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">{college.name}</h1>
+          <p className="text-lg text-gray-700 mb-4">
+            **Rating:** <span className="text-yellow-500 font-semibold">{college.rating} / 5</span>
+          </p>
+
+          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Admission Process</h2>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            **Admission Dates:** {college.admissionDates}
+          </p>
+          {college.admissionProcessDetails && (
+            <div className="text-gray-700 leading-relaxed mb-4">
+              <p>{college.admissionProcessDetails}</p> {/* Add a field for detailed admission process in your DB */}
+            </div>
+          )}
+
+          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Events</h2>
+          {events.length > 0 ? (
+            <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
+              {events.map((event, index) => (
+                <li key={index}>{event}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-600 mb-4">No events listed.</p>
+          )}
+
+          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Research Works</h2>
+          {researchPapers.length > 0 ? (
+            <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
+              {researchPapers.map((paper, index) => (
+                <li key={index}>
+                  <a href={paper.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    {paper.title || `Research Paper ${index + 1}`}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-600 mb-4">No research papers listed.</p>
+          )}
+
+          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Sports Categories</h2>
+          {sports.length > 0 ? (
+            <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
+              {sports.map((sport, index) => (
+                <li key={index}>{sport}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-600 mb-4">No sports facilities listed.</p>
+          )}
+
+          {/* You can add more detailed sections here if your college data includes them */}
+          {/* For example, if you have a 'description' field in your college document */}
+          {college.description && (
+            <>
+              <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">About {college.name}</h2>
+              <p className="text-gray-700 leading-relaxed mb-4">{college.description}</p>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
