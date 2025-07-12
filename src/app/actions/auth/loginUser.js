@@ -37,7 +37,6 @@ import bcrypt from 'bcrypt';
 export const loginUser = async(payload)=>{
 	const { email, password } = payload;
 
-	// Await dbConnect call
 	const userCollection = await dbConnect(collectionNameObject.usersCollection);
 	const user = await userCollection.findOne({ email }); 
 	console.log('user found in loginUser --->', user); // Debug log
@@ -47,17 +46,18 @@ export const loginUser = async(payload)=>{
 		return null; // Return null if user not found
 	}
 	
-	// Corrected: bcrypt.compare(plainTextPassword, hashedPassword)
-	const isPasswordOK = await bcrypt.compare(password, user.password); // Correct order
+	const isPasswordOK = await bcrypt.compare(password, user.password);
 	console.log('Password comparison result:', isPasswordOK); // Debug log
 
 	if(!isPasswordOK){
 		return null; // Return null if password doesn't match
 	}
 
-	// Important: NextAuth expects an 'id' property on the user object.
+	// IMPORTANT: NextAuth expects an 'id' property on the user object.
 	// Convert MongoDB's _id to a string and assign it to 'id'.
-	// This 'id' will then be picked up by the jwt callback.
-	user.id = user._id.toString(); 
-	return user;
+	// Also, explicitly remove the 'password' field before returning the user object.
+	const { password: hashedPassword, ...userWithoutPassword } = user; // Destructure to remove password
+	userWithoutPassword.id = user._id.toString(); // Add 'id' property as a string
+
+	return userWithoutPassword; // Return user object without password and with 'id'
 }

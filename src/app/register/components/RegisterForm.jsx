@@ -5,7 +5,8 @@ import { useState } from "react";
 import { registerUser } from "@/app/actions/auth/registerUser";
 import SocialLogin from "@/app/login/components/SocialLogin";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast"; // Import toast
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react"; // Import signIn from next-auth/react
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -14,12 +15,12 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    toast.loading("Registering..."); // Show loading toast
+    const currentToastId = toast.loading("Registering..."); // Capture the ID of the loading toast
 
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-    const password = form.password.value;
+    const password = form.password.value; // Keep plain password for signIn
     const university = form.university.value;
     const address = form.address.value;
     const imageFile = form.image.files[0];
@@ -30,32 +31,55 @@ export default function RegisterForm() {
       const reader = new FileReader();
       reader.onloadend = async () => {
         imageBase64 = reader.result;
-        await submitData({ name, email, password, university, address, image: imageBase64 }, form);
+        await submitData({ name, email, password, university, address, image: imageBase64 }, form, currentToastId);
       };
       reader.readAsDataURL(imageFile);
     } else {
-      await submitData({ name, email, password, university, address, image: "" }, form);
+      await submitData({ name, email, password, university, address, image: "" }, form, currentToastId);
     }
   };
 
-  const submitData = async (payload, form) => {
+  const submitData = async (payload, form, toastId) => {
+    // Note: payload.password here is the plain text password from the form.
+    // registerUser will hash it before saving.
+    // The signIn call below needs the plain text password.
     const response = await registerUser(payload);
-    console.log("register response", response);
-    setIsSubmitting(false);
+    console.log("registerUser response:", response); // Log response from your server action
+    setIsSubmitting(false); // Set submitting to false after registerUser completes
 
     if (response?.acknowledged === true) {
-      toast.success("Registration successful!", { id: toast.loading }); // Update loading toast to success
-      router.push('/');
-      form.reset();
+      // After successful registration, immediately attempt to sign in the user
+      // This will set the session cookie and update the client-side session
+      const signInResponse = await signIn('credentials', {
+        email: payload.email,
+        password: payload.password, // Use the plain text password for signIn
+        redirect: false, // Do not redirect automatically, we handle it manually
+      });
+
+      // --- CRUCIAL DEBUGGING LOG ---
+      console.log("signInResponse after registration attempt:", signInResponse);
+
+      if (signInResponse?.ok) {
+        toast.success("Registration successful! You are now logged in.", { id: toastId });
+        router.push('/'); // Redirect to home page
+        form.reset();
+      } else {
+        // If sign-in after registration fails
+        toast.error(signInResponse?.error || "Registration successful, but failed to log in automatically. Please try logging in.", { id: toastId });
+        // It's important to reset form and potentially redirect even on sign-in failure
+        router.push('/login'); // Redirect to login page if auto-login fails
+        form.reset();
+      }
     } else {
-      toast.error(response?.message || "Registration failed", { id: toast.loading }); // Update loading toast to error
+      // If initial registration itself failed
+      toast.error(response?.message || "Registration failed", { id: toastId });
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-lg  p-6 sm:p-8 bg-section-bg rounded-lg shadow  space-y-4 border border-gray-300"
+      className="w-full max-w-lg p-6 sm:p-8 bg-section-bg rounded-lg shadow space-y-4 border border-gray-300"
     >
       <h2 className="text-xl bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-bold text-center mb-4">Create Your Account</h2>
 
@@ -134,7 +158,7 @@ export default function RegisterForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full btn  bg-button-bg mt-4 text-white hover:bg-white hover:text-black font-bold"
+        className="w-full btn bg-button-bg mt-4 text-white hover:bg-white hover:text-black font-bold"
       >
         {isSubmitting ? "Signing Up..." : "Sign Up"}
       </button>
