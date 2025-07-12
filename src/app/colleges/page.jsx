@@ -1,10 +1,13 @@
+//app/colleges/page.jsx
 import CollegeCard from "@/components/CollegeCard";
 import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
 
-export default async function Colleges() {
+
+export default async function Colleges() { // This is already an async function, which is good
   let colleges = [];
   try {
-    const collegeCollection = dbConnect(collectionNameObject.collegeCollection);
+    // --- FIX: Await dbConnect here ---
+    const collegeCollection = await dbConnect(collectionNameObject.collegeCollection);
     colleges = await collegeCollection.find({}).toArray();
   } catch (error) {
     console.error("college data fetch error:", error);
@@ -15,7 +18,8 @@ export default async function Colleges() {
       <h1 className="text-3xl font-bold mb-4">All Colleges</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {colleges.map((college) => (
-          <CollegeCard key={college._id} college={college} />
+          // Ensure college._id is converted to string if it's an ObjectId
+          <CollegeCard key={college._id.toString()} college={college} />
         ))}
       </div>
     </div>

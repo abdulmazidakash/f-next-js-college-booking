@@ -11,7 +11,8 @@ export default async function CollegeDetailsPage({ params }) {
     if (!ObjectId.isValid(id)) {
       notFound(); // Handle invalid ID format
     }
-    const collegeCollection = dbConnect(collectionNameObject.collegeCollection);
+    // --- FIX: Await dbConnect here ---
+    const collegeCollection = await dbConnect(collectionNameObject.collegeCollection);
     college = await collegeCollection.findOne({ _id: new ObjectId(id) });
 
     if (!college) {
@@ -25,6 +26,7 @@ export default async function CollegeDetailsPage({ params }) {
   // Ensure arrays are handled gracefully
   const events = college.events && Array.isArray(college.events) ? college.events : [];
   const sports = college.sports && Array.isArray(college.sports) ? college.sports : [];
+  // Assuming researchPapers is an array of objects with a 'title' and 'link'
   const researchPapers = college.researchPapers && Array.isArray(college.researchPapers) ? college.researchPapers : [];
 
   return (
@@ -66,6 +68,7 @@ export default async function CollegeDetailsPage({ params }) {
           {researchPapers.length > 0 ? (
             <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
               {researchPapers.map((paper, index) => (
+                // Ensure paper.link and paper.title exist in your data
                 <li key={index}>
                   <a href={paper.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                     {paper.title || `Research Paper ${index + 1}`}
@@ -88,8 +91,6 @@ export default async function CollegeDetailsPage({ params }) {
             <p className="text-gray-600 mb-4">No sports facilities listed.</p>
           )}
 
-          {/* You can add more detailed sections here if your college data includes them */}
-          {/* For example, if you have a 'description' field in your college document */}
           {college.description && (
             <>
               <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">About {college.name}</h2>

@@ -4,19 +4,19 @@ export default function ResearchLinks() {
   const links = [
     {
       title: "Machine Learning Applications in Education",
-      url: "https://example.com/paper1",
+      url: "https://www.ijisae.org/index.php/IJISAE/article/view/5928",
     },
     {
       title: "Sustainable Energy Research by Students",
-      url: "https://example.com/paper2",
+      url: "https://www.aiub.edu/research/research-center/center-for-sustainable-energy-research-cser",
     },
     {
       title: "Blockchain for Secure Academic Records",
-      url: "https://example.com/paper3",
+      url: "https://www.scirp.org/journal/paperinformation?paperid=136384",
     },
     {
       title: "AI in College Admission Systems",
-      url: "https://example.com/paper4",
+      url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10569720/",
     },
   ];
 

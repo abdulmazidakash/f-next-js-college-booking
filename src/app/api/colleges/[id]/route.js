@@ -15,7 +15,8 @@ export async function GET(request, { params }) {
       });
     }
 
-    const collegeCollection = dbConnect(collectionNameObject.collegeCollection);
+    // --- FIX: Await dbConnect here ---
+    const collegeCollection = await dbConnect(collectionNameObject.collegeCollection);
     const college = await collegeCollection.findOne({ _id: new ObjectId(id) });
 
     if (!college) {
@@ -24,6 +25,10 @@ export async function GET(request, { params }) {
         headers: { "Content-Type": "application/json" },
       });
     }
+
+    // Convert ObjectId to string for JSON serialization
+    // This is important if you plan to send the _id to the client
+    college._id = college._id.toString();
 
     return new Response(JSON.stringify(college), {
       status: 200,

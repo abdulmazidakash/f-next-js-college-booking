@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react"; // Import useRef
 import { FaUserEdit, FaSave } from "react-icons/fa";
 import { MdEmail, MdSchool, MdLocationOn } from "react-icons/md";
 import toast from "react-hot-toast";
@@ -15,6 +15,8 @@ export default function ProfilePage() {
     university: "",
     address: "",
   });
+  // Use a ref to store the original user data when editing starts
+  const originalUserRef = useRef(null);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -23,16 +25,23 @@ export default function ProfilePage() {
   const fetchUserData = async () => {
     try {
       const res = await fetch("/api/user");
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
       const data = await res.json();
-      console.log('profile page fetch data--->', data);
-      setUser({
+      console.log('profile page fetched data--->', data);
+      const fetchedUserData = {
         name: data.name,
         email: data.email,
         university: data.university || "",
         address: data.address || "",
-      });
+      };
+      setUser(fetchedUserData);
+      // Store the fetched data as the original state
+      originalUserRef.current = fetchedUserData;
     } catch (err) {
       console.error("Failed to load user data:", err);
+      toast.error("Failed to load profile data.");
     }
   };
 
@@ -47,6 +56,8 @@ export default function ProfilePage() {
       if (data.success) {
         toast.success("Profile updated successfully!");
         setIsEditing(false);
+        // Update the originalUserRef with the new saved data
+        originalUserRef.current = user;
       } else {
         toast.error("Update failed.");
       }
@@ -56,9 +67,19 @@ export default function ProfilePage() {
     }
   };
 
+  // NEW: handleCancel function
+  const handleCancel = () => {
+    // Revert user state to the original data
+    if (originalUserRef.current) {
+      setUser(originalUserRef.current);
+    }
+    setIsEditing(false); // Exit editing mode
+    toast("Changes discarded.", { icon: '👋' });
+  };
+
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
     <div className="max-w-3xl mx-auto p-4 sm:p-6 md:p-8">
@@ -126,7 +147,7 @@ export default function ProfilePage() {
                 placeholder="University"
               />
             ) : (
-              <p className="text-base">{user.university}</p>
+              <p className="text-base">{user.university || 'n/a'}</p>
             )}
           </div>
 
@@ -143,20 +164,29 @@ export default function ProfilePage() {
                 placeholder="Address"
               />
             ) : (
-              <p className="text-base">{user.address}</p>
+              <p className="text-base">{user.address || 'n/a'}</p>
             )}
           </div>
         </div>
 
         {/* Buttons */}
-        <div className="mt-8 flex justify-end">
+        <div className="mt-8 flex justify-end gap-4"> {/* Added gap-4 for spacing */}
           {isEditing ? (
-            <button
-              onClick={handleSave}
-              className="btn bg-green-600 text-white hover:bg-green-700"
-            >
-              <FaSave className="mr-2" /> Save
-            </button>
+            <>
+              <button
+                onClick={handleSave}
+                className="btn bg-green-600 text-white hover:bg-green-700"
+              >
+                <FaSave className="mr-2" /> Save
+              </button>
+              {/* NEW: Cancel button */}
+              <button
+                onClick={handleCancel}
+                className="btn bg-gray-400 text-white hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+            </>
           ) : (
             <button
               onClick={() => setIsEditing(true)}
