@@ -5,9 +5,10 @@ export default function RegisterPage() {
   return (
     <>
    
-      <section className="container mx-auto">
+      <section className="container mx-auto my-8">
 
         {/* Right Section */}
+        
         <div className="flex justify-center items-center">
           <RegisterForm />
         </div>
