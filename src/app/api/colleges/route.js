@@ -1,11 +1,12 @@
+// app/api/colleges/route.js
 "use server";
 
 import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
-import { ObjectId } from "mongodb";
 
 export async function GET() {
   try {
-    const collegeCollection = dbConnect(collectionNameObject.collegeCollection);
+    // Await the dbConnect call
+    const collegeCollection = await dbConnect(collectionNameObject.collegeCollection);
     const colleges = await collegeCollection.find({}).toArray();
     return new Response(JSON.stringify(colleges), {
       status: 200,
@@ -25,7 +26,6 @@ export async function POST(request) {
     const {
       name,
       image,
-      rating,
       admissionDates,
       researchCount,
       events,
@@ -33,21 +33,22 @@ export async function POST(request) {
     } = body;
 
     // Validate required fields
-    if (!name || !image || !rating || !admissionDates || !researchCount) {
+    if (!name || !image || !admissionDates || !researchCount) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
         status: 400,
       });
     }
 
-    const collegeCollection = dbConnect(collectionNameObject.collegeCollection);
+    // Await the dbConnect call
+    const collegeCollection = await dbConnect(collectionNameObject.collegeCollection);
     const newCollege = {
       name,
       image,
-      rating: parseFloat(rating),
       admissionDates,
       researchCount: parseInt(researchCount),
       events: events ? events.split(",").map((event) => event.trim()) : [],
       sports: sports ? sports.split(",").map((sport) => sport.trim()) : [],
+      createdAt: new Date(), // It's good practice to add a creation timestamp
     };
 
     const result = await collegeCollection.insertOne(newCollege);

@@ -4,14 +4,17 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast"; // Assuming react-hot-toast for notifications
+import { useSession } from "next-auth/react";
 
 export default function Admission() {
+  const {data} = useSession();
+  console.log('admission user--->', data);
   const [formData, setFormData] = useState({
     collegeId: "", // New field to store selected college ID
     collegeName: "", // New field to store selected college name
     name: "",
     subject: "",
-    email: "",
+    email: data?.user?.email || "", // Use session email if available
     phone: "",
     address: "",
     dob: "",
@@ -148,8 +151,9 @@ export default function Admission() {
           type="email"
           id="email"
           name="email"
+          readOnly
           placeholder="Candidate Email"
-          value={formData.email}
+          value={formData.email || ""}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded-lg"
           required

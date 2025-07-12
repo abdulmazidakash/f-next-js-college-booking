@@ -1,3 +1,4 @@
+// app/add-college/page.js
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -9,7 +10,6 @@ export default function AddCollege() {
   const [formData, setFormData] = useState({
     name: "",
     image: "",
-    rating: "",
     admissionDates: "",
     researchCount: "",
     events: "",
@@ -38,7 +38,6 @@ export default function AddCollege() {
         setFormData({
           name: "",
           image: "",
-          rating: "",
           admissionDates: "",
           researchCount: "",
           events: "",
@@ -82,20 +81,7 @@ export default function AddCollege() {
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Rating</label>
-          <input
-            type="number"
-            name="rating"
-            value={formData.rating}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-lg"
-            step="0.1"
-            min="0"
-            max="5"
-            required
-          />
-        </div>
+
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Admission Dates</label>
           <input
