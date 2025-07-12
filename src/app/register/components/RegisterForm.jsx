@@ -1,10 +1,11 @@
-//app/register/components/RegisterForm.jsx
+// app/register/components/RegisterForm.jsx
 "use client";
 import Link from "next/link";
 import { useState } from "react";
 import { registerUser } from "@/app/actions/auth/registerUser";
 import SocialLogin from "@/app/login/components/SocialLogin";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast"; // Import toast
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    toast.loading("Registering..."); // Show loading toast
 
     const form = e.target;
     const name = form.name.value;
@@ -28,7 +30,6 @@ export default function RegisterForm() {
       const reader = new FileReader();
       reader.onloadend = async () => {
         imageBase64 = reader.result;
-
         await submitData({ name, email, password, university, address, image: imageBase64 }, form);
       };
       reader.readAsDataURL(imageFile);
@@ -43,11 +44,11 @@ export default function RegisterForm() {
     setIsSubmitting(false);
 
     if (response?.acknowledged === true) {
-      alert("✅ Registration successful!");
+      toast.success("Registration successful!", { id: toast.loading }); // Update loading toast to success
       router.push('/');
       form.reset();
     } else {
-      alert(response?.message || "❌ Registration failed");
+      toast.error(response?.message || "Registration failed", { id: toast.loading }); // Update loading toast to error
     }
   };
 
