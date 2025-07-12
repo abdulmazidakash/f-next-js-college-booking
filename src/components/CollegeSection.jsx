@@ -19,10 +19,11 @@ export default function CollegeSection({ searchTerm }) {
   );
 
   return (
-    <section className="py-14 px-4 md:px-10 bg-gradient-to-br from-white via-purple-50 to-pink-50 rounded-lg mt-10 shadow-inner">
+    <section className="w-11/12 mx-auto py-14 px-4 md:px-10 mt-10">
       {/* Title */}
-      <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
-        🎓 Featured Colleges
+
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-10">
+        🎓 <span className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">Featured Colleges</span>
       </h2>
 <p className="text-center max-w-3xl mx-auto text-gray-600 text-base md:text-lg mb-8">
   Discover top colleges carefully selected for their academic excellence, research contributions, vibrant student life, and sports activities.

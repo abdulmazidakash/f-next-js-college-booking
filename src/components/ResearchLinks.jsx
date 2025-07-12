@@ -21,10 +21,10 @@ export default function ResearchLinks() {
   ];
 
   return (
-    <section className="py-10 px-4 bg-gradient-to-br from-green-100 via-white to-blue-100 mt-12 rounded-lg shadow-lg my-8">
+    <section className="py-10 px-4 bg-gradient-to-br from-white via-purple-50 to-pink-50  mt-12 rounded-lg my-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-          📚 Student Research Highlights
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-10">
+          📚 <span className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">Student Research Highlights</span>
         </h2>
         <p className="text-gray-600 max-w-xl mx-auto">
           Dive into insightful research works conducted by our brilliant college students. These recommended papers cover modern tech and innovation.
@@ -33,12 +33,12 @@ export default function ResearchLinks() {
 
       <ul className="max-w-3xl mx-auto space-y-4 text-lg">
         {links.map((paper, index) => (
-          <li key={index} className="bg-white shadow-sm hover:shadow-md p-4 rounded-lg transition-all">
+          <li key={index} className="bg-white border border-gray-300 shadow-sm hover:shadow-md p-4 rounded-lg transition-all">
             <a
               href={paper.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline font-medium flex items-center gap-2"
+              className="text-black hover:underline font-medium flex items-center gap-2"
             >
               🔗 {paper.title}
             </a>

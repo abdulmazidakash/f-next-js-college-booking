@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { IoMdRibbon } from 'react-icons/io';
 
 export default function ReviewSection() {
   const [reviews, setReviews] = useState([]);
@@ -42,7 +43,8 @@ export default function ReviewSection() {
     return (
       <section className="py-10 px-4 my-8 text-center text-gray-600">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          🎓 Student College Reviews
+          <IoMdRibbon className="text-red-500 text-2xl" title="Awarded" />
+            Student College Reviews
         </h2>
         <p>No reviews available yet. Be the first to share your experience!</p>
       </section>
@@ -50,9 +52,9 @@ export default function ReviewSection() {
   }
 
   return (
-    <section className="py-10 px-4 bg-gradient-to-br from-purple-100 via-white to-pink-100 my-8 rounded-lg">
-      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        🎓 Student College Reviews
+    <section className="py-10 px-4 w-11/12 mx-auto my-8 rounded-lg">
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-10 text-gray-800 flex justify-center items-center gap-2">
+      <IoMdRibbon className="text-red-500 text-4xl md:text-5xl" title="Student College Reviews" /> <span className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">Student College Reviews</span>
       </h2>
       <p className="text-center max-w-2xl mx-auto text-gray-600 text-base md:text-lg mb-8">
         Read honest reviews and ratings from students who have experienced campus life, academics, and facilities firsthand.
@@ -73,7 +75,7 @@ export default function ReviewSection() {
       >
         {reviews.map((review, index) => (
           <SwiperSlide key={review._id || index}> {/* Use _id if available for unique key */}
-            <div className="bg-white p-6 rounded-lg shadow-md h-full flex flex-col justify-between">
+            <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-md flex flex-col justify-between">
               <div>
                 <p className="text-lg font-semibold mb-1">{review.userName}</p>
                 {review.collegeName && (

@@ -13,16 +13,19 @@ export default function Home() {
 
   return (
     <div>
-      <div className="bg-gradient-to-r from-pink-100 via-white to-purple-100">
+      <div className="bg-gradient-to-b from-pink-100 via-white to-purple-100">
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
+      <div className="bg-gradient-to-br from-white via-purple-50 to-pink-50 ">
+        <CollegeSection searchTerm={searchTerm} />
+      </div>
       <div className="w-11/12 mx-auto">
-
-      <CollegeSection searchTerm={searchTerm} />
-      <ImageGallery />
-      <ResearchLinks />
-      <ReviewSection />
-    </div>
+        <ImageGallery />
+        <ResearchLinks />
+      </div>
+      <div className="">
+        <ReviewSection />
+      </div>
     </div>
   );
 }

@@ -73,7 +73,7 @@ export default function Navbar() {
         ) : (
           <>
             {/* <Link href="/register" className="btn btn-error btn-soft">Register</Link> */}
-            <Link href="/login" className="btn hover:bg-button-bg  text-button-bg hover:text-white  mr-2">Login</Link>
+            <Link href="/login" className="btn bg-button-bg  text-white mr-2">Login</Link>
           </>
         )}
       </div>

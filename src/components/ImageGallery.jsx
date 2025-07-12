@@ -13,8 +13,9 @@ export default function ImageGallery() {
   return (
     <section className="py-10  mt-12">
       <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-          🎓 Graduate Group Gallery
+        {/* title  */}
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-10">
+          🎓 <span className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">Graduate Group Gallery</span>
         </h2>
         <p className="text-gray-600 max-w-xl mx-auto">
           Explore our vibrant moments captured from various college graduation events. Cherished memories of students with their peers and faculty.
