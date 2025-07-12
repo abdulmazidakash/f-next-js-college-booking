@@ -2,7 +2,7 @@
 "use server";
 
 import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
-import { writeFile } from "fs/promises"; // For saving images temporarily (not for production)
+import { writeFile, mkdir } from "fs/promises"; // Import mkdir from fs/promises
 import path from "path";
 
 export async function POST(req) {
@@ -12,20 +12,21 @@ export async function POST(req) {
 
     let imagePath = "";
     if (imageFile && imageFile.size > 0) { // Check if a file was actually uploaded
-      // This is a very basic way to save files. For production, use cloud storage.
       const buffer = Buffer.from(await imageFile.arrayBuffer());
       const filename = `${Date.now()}-${imageFile.name.replace(/\s/g, "_")}`;
-      // Define a path where images will be stored (e.g., public/uploads)
       const uploadDir = path.join(process.cwd(), "public", "uploads");
-      // Ensure the directory exists (you might need 'fs.mkdir' for production)
-      // For simplicity, assume 'public/uploads' exists or handle its creation.
+
+      // --- IMPORTANT FIX 1: Ensure upload directory exists ---
+      // This will create the directory if it doesn't exist
+      await mkdir(uploadDir, { recursive: true });
+
       imagePath = `/uploads/${filename}`;
       await writeFile(path.join(uploadDir, filename), buffer);
     }
 
     const admissionData = {
       collegeId: formData.get("collegeId"),
-      collegeName: formData.get("collegeName"), // Store college name for easier display
+      collegeName: formData.get("collegeName"),
       name: formData.get("name"),
       subject: formData.get("subject"),
       email: formData.get("email"),
@@ -33,7 +34,7 @@ export async function POST(req) {
       address: formData.get("address"),
       dob: formData.get("dob"),
       image: imagePath, // Store the path to the saved image
-      createdAt: new Date(), // Add timestamp
+      createdAt: new Date(),
     };
 
     // Basic validation
@@ -41,18 +42,19 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "Missing required admission fields." }), { status: 400 });
     }
 
-    // Ensure `collectionNameObject.admissionCollection` is defined in your `dbConnect` setup
-    // If not, you might define it like: `export const collectionNameObject = { ..., admissionCollection: "admissions" };`
-    const admissionCollection = dbConnect(collectionNameObject.admissionCollection); 
+    // --- IMPORTANT FIX 2: Await dbConnect ---
+    // dbConnect is now an async function, so you must await its result
+    const admissionCollection = await dbConnect(collectionNameObject.admissionCollection);
     const result = await admissionCollection.insertOne(admissionData);
 
     return new Response(JSON.stringify({ message: "Admission submitted successfully", id: result.insertedId }), {
-      status: 201, // 201 Created
+      status: 201,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("Error submitting admission:", error);
-    return new Response(JSON.stringify({ error: "Failed to submit admission" }), {
+    // Provide a more specific error message if possible, or log the full error
+    return new Response(JSON.stringify({ error: "Failed to submit admission. Please check server logs for details." }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
