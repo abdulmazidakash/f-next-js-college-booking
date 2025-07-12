@@ -8,13 +8,17 @@ export const GET = async () => {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
-  const userCollection = dbConnect(collectionNameObject.usersCollection);
+  // --- FIX: Await dbConnect here ---
+  const userCollection = await dbConnect(collectionNameObject.usersCollection);
   const user = await userCollection.findOne({ email: session.user.email });
 
   if (!user) return NextResponse.json({ message: "User not found" }, { status: 404 });
 
+  // IMPORTANT: Ensure the user object has an _id before converting
+  if (user._id) {
+    user._id = user._id.toString(); // Convert ObjectId to string for JSON serialization
+  }
   delete user.password; // don't send password
-  user._id = user._id.toString();
   return NextResponse.json(user);
 };
 
@@ -24,7 +28,8 @@ export const PATCH = async (req) => {
 
   const updateData = await req.json();
 
-  const userCollection = dbConnect(collectionNameObject.usersCollection);
+  // --- FIX: Await dbConnect here ---
+  const userCollection = await dbConnect(collectionNameObject.usersCollection);
   const result = await userCollection.updateOne(
     { email: session.user.email },
     { $set: updateData }
