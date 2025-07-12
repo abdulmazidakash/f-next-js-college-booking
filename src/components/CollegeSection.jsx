@@ -18,28 +18,29 @@ export default function CollegeSection({ searchTerm }) {
     college.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-{filteredColleges.length === 0 && searchTerm !== "" && (
-  <p className="mt-4 text-red-500">No colleges found for "{searchTerm}"</p>
-)}
-
-
   return (
-  <section className="py-6">
-  
-    <h2 className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent text-4xl font-bold text-center my-6">Featured College</h2>
-    
-    {filteredColleges.length === 0 && searchTerm !== "" && (
-      <p className="mt-4 text-red-500 text-center text-2xl font-bold">
-        No colleges found for "{searchTerm}"
-      </p>
-    )}
+    <section className="py-14 px-4 md:px-10 bg-gradient-to-br from-white via-purple-50 to-pink-50 rounded-lg mt-10 shadow-inner">
+      {/* Title */}
+      <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+        🎓 Featured Colleges
+      </h2>
+<p className="text-center max-w-3xl mx-auto text-gray-600 text-base md:text-lg mb-8">
+  Discover top colleges carefully selected for their academic excellence, research contributions, vibrant student life, and sports activities.
+</p>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {(searchTerm ? filteredColleges : colleges).slice(0, 3).map((college) => (
-        <CollegeCard key={college._id} college={college} />
-      ))}
-    </div>
-  </section>
-);
+      {/* If search returns no results */}
+      {filteredColleges.length === 0 && searchTerm !== "" && (
+        <div className="text-center text-red-500 text-lg md:text-2xl font-semibold mb-10">
+          No colleges found for "<span className="font-bold">{searchTerm}</span>"
+        </div>
+      )}
 
+      {/* College Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {(searchTerm ? filteredColleges : colleges).slice(0, 3).map((college) => (
+          <CollegeCard key={college._id} college={college} />
+        ))}
+      </div>
+    </section>
+  );
 }
