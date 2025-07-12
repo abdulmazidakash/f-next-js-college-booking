@@ -2,6 +2,14 @@
 import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
 import { ObjectId } from "mongodb";
 import { notFound } from "next/navigation";
+import {
+  FaStar,
+  FaCalendarAlt,
+  FaTrophy,
+  FaRunning,
+  FaBookOpen,
+  FaInfoCircle,
+} from "react-icons/fa";
 
 export default async function CollegeDetailsPage({ params }) {
   const { id } = params;
@@ -35,75 +43,106 @@ export default async function CollegeDetailsPage({ params }) {
   const sports = college.sports && Array.isArray(college.sports) ? college.sports : [];
   const researchPapers = college.researchPapers && Array.isArray(college.researchPapers) ? college.researchPapers : [];
 
-  return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="bg-white rounded-lg shadow-xl overflow-hidden">
+   return (
+    <>
+    <div>
+      <h2 className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent text-4xl md:text-5xl text-center font-bold my-6">Detail Information {college.name}</h2>
+    </div>
+    <div className="container mx-auto rounded-lg max-w-5xl border border-gray-300 my-4 shadow">
+      <div className="bg-white rounded-lg overflow-hidden">
         <img
           src={college.image || "/default.jpg"}
           alt={college.name}
-          className="w-full h-80 object-cover"
+          className="w-full h-64 md:h-96 object-cover"
         />
-        <div className="p-6">
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">{college.name}</h1>
-          <p className="text-lg text-gray-700 mb-4">
-            **Rating:** <span className="text-yellow-500 font-semibold">{college.rating} / 5</span>
-          </p>
 
-          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Admission Process</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            **Admission Dates:** {college.admissionDates}
-          </p>
-          {college.admissionProcessDetails && (
-            <div className="text-gray-700 leading-relaxed mb-4">
-              <p>{college.admissionProcessDetails}</p>
+        <div className="p-6 md:p-10">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+            {college.name}
+          </h1>
+
+          <div className="flex items-center text-yellow-500 text-lg mb-6 justify-center gap-2">
+            <FaStar /> <span className="font-semibold">Rating: {college.rating || 'n/a'} / 5</span>
+          </div>
+
+          <div className="space-y-6 text-gray-700">
+            {/* Admission Info */}
+            <div>
+              <h2 className="text-xl font-semibold flex items-center gap-2 text-button-bg">
+                <FaCalendarAlt /> Admission Info
+              </h2>
+              <p className="ml-6 mt-1">Admission Date: {college.admissionDates}</p>
+              {college.admissionProcessDetails && (
+                <p className="ml-6 mt-1">{college.admissionProcessDetails}</p>
+              )}
             </div>
-          )}
 
-          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Events</h2>
-          {events.length > 0 ? (
-            <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
-              {events.map((event, index) => (
-                <li key={index}>{event}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-600 mb-4">No events listed.</p>
-          )}
+            {/* Events */}
+            <div>
+              <h2 className="text-xl font-semibold flex items-center gap-2 text-button-bg">
+                <FaTrophy /> Events
+              </h2>
+              {events.length > 0 ? (
+                <ul className="ml-6 list-disc mt-1 space-y-1">
+                  {events.map((event, i) => <li key={i}>{event}</li>)}
+                </ul>
+              ) : (
+                <p className="ml-6 text-gray-500">No events listed.</p>
+              )}
+            </div>
 
-          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Research Works</h2>
-          {researchPapers.length > 0 ? (
-            <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
-              {researchPapers.map((paper, index) => (
-                <li key={index}>
-                  <a href={paper.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                    {paper.title || `Research Paper ${index + 1}`}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-600 mb-4">No research papers listed.</p>
-          )}
+            {/* Research */}
+            <div>
+              <h2 className="text-xl font-semibold flex items-center gap-2 text-button-bg">
+                <FaBookOpen /> Research Works
+              </h2>
+              {researchPapers.length > 0 ? (
+                <ul className="ml-6 list-disc mt-1 space-y-1">
+                  {researchPapers.map((paper, i) => (
+                    <li key={i}>
+                      <a
+                        href={paper.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        {paper.title || `Research Paper ${i + 1}`}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="ml-6 text-gray-500">No research papers listed.</p>
+              )}
+            </div>
 
-          <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">Sports Categories</h2>
-          {sports.length > 0 ? (
-            <ul className="list-disc list-inside text-gray-700 space-y-1 mb-4">
-              {sports.map((sport, index) => (
-                <li key={index}>{sport}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-600 mb-4">No sports facilities listed.</p>
-          )}
+            {/* Sports */}
+            <div>
+              <h2 className="text-xl font-semibold flex items-center gap-2 text-button-bg">
+                <FaRunning /> Sports
+              </h2>
+              {sports.length > 0 ? (
+                <ul className="ml-6 list-disc mt-1 space-y-1">
+                  {sports.map((sport, i) => <li key={i}>{sport}</li>)}
+                </ul>
+              ) : (
+                <p className="ml-6 text-gray-500">No sports facilities listed.</p>
+              )}
+            </div>
 
-          {college.description && (
-            <>
-              <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">About {college.name}</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">{college.description}</p>
-            </>
-          )}
+            {/* Description */}
+            {college.description && (
+              <div>
+                <h2 className="text-xl font-semibold flex items-center gap-2 text-button-bg">
+                  <FaInfoCircle /> About {college.name}
+                </h2>
+                <p className="ml-6 mt-1">{college.description}</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
+    </>
   );
 }

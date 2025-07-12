@@ -4,21 +4,60 @@ import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaSchoolFlag } from "react-icons/fa6";
+import { usePathname } from 'next/navigation';
+
 
 export default function Navbar() {
+const pathname = usePathname();
 
   const { data: session, status } = useSession();
   // console.log('navbar session --->', session);
 
   const navMenu = () => (
-    <>
-      <li><Link href="/">Home</Link></li>
-      <li><Link href="/colleges">Colleges</Link></li>
-      <li><Link href="/admission">Admission</Link></li>
-      <li><Link href="/my-college">My College</Link></li>
-      <li><Link href="/add-college">Add College</Link></li>
-    </>
-  );
+  <>
+    <li>
+      <Link
+        href="/"
+        className={pathname === "/" ? "text-button-bg font-bold underline" : ""}
+      >
+        Home
+      </Link>
+    </li>
+    <li>
+      <Link
+        href="/colleges"
+        className={pathname === "/colleges" ? "text-button-bg font-bold underline" : ""}
+      >
+        Colleges
+      </Link>
+    </li>
+    <li>
+      <Link
+        href="/admission"
+        className={pathname === "/admission" ? "text-button-bg font-bold underline" : ""}
+      >
+        Admission
+      </Link>
+    </li>
+    <li>
+      <Link
+        href="/my-college"
+        className={pathname === "/my-college" ? "text-button-bg font-bold underline" : ""}
+      >
+        My College
+      </Link>
+    </li>
+    <li>
+      <Link
+        href="/add-college"
+        className={pathname === "/add-college" ? "text-button-bg font-bold underline" : ""}
+      >
+        Add College
+      </Link>
+    </li>
+  </>
+);
+
 
   return (
     <div className="navbar w-11/12 mx-auto py-4">

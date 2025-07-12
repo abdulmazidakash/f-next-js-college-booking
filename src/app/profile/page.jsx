@@ -83,8 +83,8 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-3xl mx-auto p-4 sm:p-6 md:p-8">
-      <div className="bg-white shadow-xl rounded-xl p-6 md:p-10 border border-gray-200">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">My Profile</h2>
+      <div className="bg-gradient-to-br from-white via-purple-50 to-pink-50 shadow-xl rounded-xl p-6 md:p-10 border border-gray-200">
+        <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">My Profile</h2>
 
         <div className="space-y-6">
           {/* Image */}
@@ -175,7 +175,7 @@ export default function ProfilePage() {
             <>
               <button
                 onClick={handleSave}
-                className="btn bg-green-600 text-white hover:bg-green-700"
+                className="btn bg-button-bg text-white hover:bg-button-bg"
               >
                 <FaSave className="mr-2" /> Save
               </button>
@@ -190,7 +190,7 @@ export default function ProfilePage() {
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="btn bg-blue-600 text-white hover:bg-blue-700"
+              className="btn bg-button-bg text-white hover:bg-bg-button-bg"
             >
               <FaUserEdit className="mr-2" /> Edit
             </button>

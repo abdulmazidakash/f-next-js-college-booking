@@ -1,6 +1,7 @@
 "use client";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
+import { FaSchoolFlag } from "react-icons/fa6";
 
 export default function Footer() {
   return (
@@ -9,7 +10,7 @@ export default function Footer() {
         
         {/* Branding Section */}
         <div>
-          <h2 className="text-xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent mb-4">College Booking</h2>
+          <h2 className="flex items-center gap-2 text-xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent mb-4"><FaSchoolFlag className="text-button-bg" /> College Booking</h2>
           <p className="text-sm">Your trusted platform for booking top college facilities and services easily.</p>
         </div>
 
