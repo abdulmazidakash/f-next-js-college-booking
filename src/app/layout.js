@@ -37,7 +37,10 @@ export default function RootLayout({ children }) {
             {/* Wrap children in Suspense to handle client-side components
                 that cannot be pre-rendered on the server (e.g., those using useSearchParams).
                 This defers rendering until the client side. */}
-            <Suspense fallback={<div>Loading page...</div>}> {/* You can customize the fallback UI */}
+            <Suspense fallback={<div className="flex justify-center items-center h-screen">
+        <span className="loading loading-spinner loading-lg text-button-bg"></span>
+        <p className="ml-2 text-lg text-gray-700">Loading your college data...</p>
+      </div>}> {/* You can customize the fallback UI */}
               {children}
             </Suspense>
           </main>
