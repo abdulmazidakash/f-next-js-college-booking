@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+// registerUser will now expect FormData
 import { registerUser } from "@/app/actions/auth/registerUser";
 import SocialLogin from "@/app/login/components/SocialLogin";
 import { useRouter } from "next/navigation";
@@ -20,58 +21,58 @@ export default function RegisterForm() {
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-    const password = form.password.value; // Keep plain password for signIn
+    const password = form.password.value;
     const university = form.university.value;
     const address = form.address.value;
-    const imageFile = form.image.files[0];
+    const imageFile = form.image.files[0]; // Get the File object directly
 
-    let imageBase64 = "";
-
+    // Create FormData object to send all fields, including the file
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", name);
+    formDataToSend.append("email", email);
+    formDataToSend.append("password", password); // Send plain password for hashing on server
+    formDataToSend.append("university", university);
+    formDataToSend.append("address", address);
     if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        imageBase64 = reader.result;
-        await submitData({ name, email, password, university, address, image: imageBase64 }, form, currentToastId);
-      };
-      reader.readAsDataURL(imageFile);
+      formDataToSend.append("image", imageFile); // Append the File object
     } else {
-      await submitData({ name, email, password, university, address, image: "" }, form, currentToastId);
+      formDataToSend.append("image", ""); // Send empty string if no image
     }
+
+    // Call submitData with FormData
+    await submitData(formDataToSend, form, currentToastId);
   };
 
-  const submitData = async (payload, form, toastId) => {
-    // Note: payload.password here is the plain text password from the form.
-    // registerUser will hash it before saving.
-    // The signIn call below needs the plain text password.
-    const response = await registerUser(payload);
-    console.log("registerUser response:", response); // Log response from your server action
-    setIsSubmitting(false); // Set submitting to false after registerUser completes
+  // submitData now expects FormData as payload
+  const submitData = async (formDataToSend, form, toastId) => {
+    // We need to extract email and plain password from formDataToSend for the signIn call later
+    const email = formDataToSend.get("email");
+    const password = formDataToSend.get("password");
+
+    const response = await registerUser(formDataToSend); // Pass FormData directly
+    console.log("registerUser response:", response);
+    setIsSubmitting(false);
 
     if (response?.acknowledged === true) {
       // After successful registration, immediately attempt to sign in the user
-      // This will set the session cookie and update the client-side session
       const signInResponse = await signIn('credentials', {
-        email: payload.email,
-        password: payload.password, // Use the plain text password for signIn
-        redirect: false, // Do not redirect automatically, we handle it manually
+        email: email,
+        password: password, // Use the plain text password for signIn
+        redirect: false,
       });
 
-      // --- CRUCIAL DEBUGGING LOG ---
       console.log("signInResponse after registration attempt:", signInResponse);
 
       if (signInResponse?.ok) {
         toast.success("Registration successful! You are now logged in.", { id: toastId });
-        router.push('/'); // Redirect to home page
+        router.push('/');
         form.reset();
       } else {
-        // If sign-in after registration fails
         toast.error(signInResponse?.error || "Registration successful, but failed to log in automatically. Please try logging in.", { id: toastId });
-        // It's important to reset form and potentially redirect even on sign-in failure
-        router.push('/login'); // Redirect to login page if auto-login fails
+        router.push('/login');
         form.reset();
       }
     } else {
-      // If initial registration itself failed
       toast.error(response?.message || "Registration failed", { id: toastId });
     }
   };
