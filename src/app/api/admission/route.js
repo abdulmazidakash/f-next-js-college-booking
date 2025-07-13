@@ -2,60 +2,107 @@
 "use server";
 
 import dbConnect, { collectionNameObject } from "@/lib/dbConnect";
-import { writeFile, mkdir } from "fs/promises"; // Import mkdir from fs/promises
-import path from "path";
+import { NextResponse } from "next/server";
 
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const formData = await req.formData();
-    const imageFile = formData.get("image"); // Get the file object
+    const formData = await request.formData();
 
-    let imagePath = "";
-    if (imageFile && imageFile.size > 0) { // Check if a file was actually uploaded
-      const buffer = Buffer.from(await imageFile.arrayBuffer());
-      const filename = `${Date.now()}-${imageFile.name.replace(/\s/g, "_")}`;
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const collegeId = formData.get("collegeId");
+    const collegeName = formData.get("collegeName");
+    const name = formData.get("name");
+    const subject = formData.get("subject");
+    const email = formData.get("email");
+    const phone = formData.get("phone");
+    const address = formData.get("address");
+    const dob = formData.get("dob");
+    const imageFile = formData.get("image"); // This will be a File object or null
 
-      // --- IMPORTANT FIX 1: Ensure upload directory exists ---
-      // This will create the directory if it doesn't exist
-      await mkdir(uploadDir, { recursive: true });
-
-      imagePath = `/uploads/${filename}`;
-      await writeFile(path.join(uploadDir, filename), buffer);
+    // Basic validation for required fields
+    if (!collegeId || !collegeName || !name || !subject || !email || !phone || !address || !dob) {
+      return NextResponse.json({ error: "All fields are required." }, { status: 400 });
     }
 
-    const admissionData = {
-      collegeId: formData.get("collegeId"),
-      collegeName: formData.get("collegeName"),
-      name: formData.get("name"),
-      subject: formData.get("subject"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      address: formData.get("address"),
-      dob: formData.get("dob"),
-      image: imagePath, // Store the path to the saved image
+    const admissionCollection = await dbConnect(collectionNameObject.admissionCollection);
+
+    // --- Duplicate Admission Check ---
+    const existingAdmission = await admissionCollection.findOne({
+      email: email,
+      collegeId: collegeId,
+    });
+
+    if (existingAdmission) {
+      return NextResponse.json(
+        { error: "You have already applied to this college with this email." },
+        { status: 409 }
+      );
+    }
+    // --- End Duplicate Admission Check ---
+
+    let imageUrl = "";
+    if (imageFile && imageFile.size > 0) {
+      // Convert ArrayBuffer to Buffer
+      const arrayBuffer = await imageFile.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      // Convert Buffer to Base64 string for ImgBB upload
+      const base64Image = buffer.toString("base64");
+
+      // ImgBB API URL
+      const imgbbApiKey = process.env.IMGBB_API_KEY;
+      if (!imgbbApiKey) {
+        throw new Error("IMGBB_API_KEY is not defined in environment variables.");
+      }
+      const imgbbUploadUrl = `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`;
+
+      // Prepare FormData for ImgBB (ImgBB expects 'image' field)
+      const imgbbFormData = new FormData();
+      imgbbFormData.append("image", base64Image); // ImgBB expects base64 string here
+      imgbbFormData.append("name", imageFile.name); // Optional: original file name
+
+      const imgbbResponse = await fetch(imgbbUploadUrl, {
+        method: "POST",
+        body: imgbbFormData, // Use imgbbFormData here
+      });
+
+      if (!imgbbResponse.ok) {
+        const errorText = await imgbbResponse.text();
+        console.error("ImgBB upload failed:", errorText);
+        throw new Error(`ImgBB upload failed: ${errorText}`);
+      }
+
+      const imgbbResult = await imgbbResponse.json();
+      if (imgbbResult.data && imgbbResult.data.url) {
+        imageUrl = imgbbResult.data.url; // Get the URL from ImgBB response
+      } else {
+        throw new Error("ImgBB did not return a valid image URL.");
+      }
+    }
+
+    const newAdmission = {
+      collegeId,
+      collegeName,
+      name,
+      subject,
+      email,
+      phone,
+      address,
+      dob,
+      image: imageUrl, // Store the ImgBB URL
       createdAt: new Date(),
     };
 
-    // Basic validation
-    if (!admissionData.collegeId || !admissionData.name || !admissionData.email || !admissionData.dob) {
-      return new Response(JSON.stringify({ error: "Missing required admission fields." }), { status: 400 });
-    }
+    const result = await admissionCollection.insertOne(newAdmission);
 
-
-    const admissionCollection = await dbConnect(collectionNameObject.admissionCollection);
-    const result = await admissionCollection.insertOne(admissionData);
-
-    return new Response(JSON.stringify({ message: "Admission submitted successfully", id: result.insertedId }), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      { message: "Admission submitted successfully", admissionId: result.insertedId },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error submitting admission:", error);
-    // Provide a more specific error message if possible, or log the full error
-    return new Response(JSON.stringify({ error: "Failed to submit admission. Please check server logs for details." }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      { error: `Failed to submit admission: ${error.message || "Server error."}` },
+      { status: 500 }
+    );
   }
 }
