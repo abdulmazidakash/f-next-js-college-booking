@@ -1,4 +1,4 @@
-```markdown
+
 # 🎓 Next.js College Booking
 
 A full-stack web application built with **Next.js**, **MongoDB**, **Tailwind CSS**, and **NextAuth.js** that allows users to browse colleges, book admissions, manage their profiles, and leave reviews. Designed for an intuitive and responsive user experience with full authentication and CRUD functionalities.
@@ -213,5 +213,3 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 💡 **Inspired by** the design of [Livi](https://livi.wpengine.com/) for modern education and admissions platforms.
-
-```
