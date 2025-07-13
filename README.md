@@ -230,8 +230,9 @@ This project is licensed under the [MIT License](LICENSE).
 
 ```
 
-## 🖼️ Project UI Preview
+---
+
+ ## 🖼️ Project UI Preview
 
 ![UI Preview](./public/college-booking.png)
----
 
