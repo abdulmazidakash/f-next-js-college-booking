@@ -233,7 +233,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 💡 **Inspired by** the design of [Livi](https://livi.wpengine.com/) for modern education and admissions platforms.
 
-```
-
----
-
