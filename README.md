@@ -224,6 +224,11 @@ EMAIL_FROM=your@email.com
 
 This project is licensed under the [MIT License](LICENSE).
 
+## 🖼️ Project UI Preview
+
+![UI Preview](./public/college-booking.png)
+
+
 ---
 
 💡 **Inspired by** the design of [Livi](https://livi.wpengine.com/) for modern education and admissions platforms.
@@ -231,8 +236,4 @@ This project is licensed under the [MIT License](LICENSE).
 ```
 
 ---
-
- ## 🖼️ Project UI Preview
-
-![UI Preview](./public/college-booking.png)
 
