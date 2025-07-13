@@ -42,8 +42,7 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "Missing required admission fields." }), { status: 400 });
     }
 
-    // --- IMPORTANT FIX 2: Await dbConnect ---
-    // dbConnect is now an async function, so you must await its result
+
     const admissionCollection = await dbConnect(collectionNameObject.admissionCollection);
     const result = await admissionCollection.insertOne(admissionData);
 

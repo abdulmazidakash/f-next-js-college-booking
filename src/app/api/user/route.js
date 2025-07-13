@@ -8,7 +8,6 @@ export const GET = async () => {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
-  // --- FIX: Await dbConnect here ---
   const userCollection = await dbConnect(collectionNameObject.usersCollection);
   const user = await userCollection.findOne({ email: session.user.email });
 
@@ -28,7 +27,6 @@ export const PATCH = async (req) => {
 
   const updateData = await req.json();
 
-  // --- FIX: Await dbConnect here ---
   const userCollection = await dbConnect(collectionNameObject.usersCollection);
   const result = await userCollection.updateOne(
     { email: session.user.email },

@@ -2,12 +2,12 @@
 
 export default function ImageGallery() {
   const images = [
-    "https://i.ibb.co/G3vTyTj0/gallery1.jpg", // Group of graduates celebrating
-    "https://i.ibb.co/Tx6Lnw28/gallery2.jpg", // Diverse group of students on campus
-    "https://i.ibb.co/8gcbkrxG/gallery3.jpg", // Graduates throwing caps
-    "https://i.ibb.co/v6zJBp3f/gallery4.jpg", // Students walking on campus
-    "https://i.ibb.co/2TwT8P4/gallery5.jpg", // Another group of diverse graduates
-    "https://i.ibb.co/Mxg4nV8n/gallery6.jpg", // Graduates with diplomas
+    "https://i.ibb.co/G3vTyTj0/gallery1.jpg",
+    "https://i.ibb.co/Tx6Lnw28/gallery2.jpg", 
+    "https://i.ibb.co/8gcbkrxG/gallery3.jpg", 
+    "https://i.ibb.co/v6zJBp3f/gallery4.jpg",
+    "https://i.ibb.co/2TwT8P4/gallery5.jpg",
+    "https://i.ibb.co/Mxg4nV8n/gallery6.jpg",
   ];
 
   return (

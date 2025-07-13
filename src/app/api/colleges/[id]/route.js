@@ -6,7 +6,7 @@ import { ObjectId } from "mongodb";
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params; // Get the ID from the URL parameters
+    const { id } = params; 
 
     if (!ObjectId.isValid(id)) {
       return new Response(JSON.stringify({ error: "Invalid College ID" }), {
@@ -15,7 +15,6 @@ export async function GET(request, { params }) {
       });
     }
 
-    // --- FIX: Await dbConnect here ---
     const collegeCollection = await dbConnect(collectionNameObject.collegeCollection);
     const college = await collegeCollection.findOne({ _id: new ObjectId(id) });
 

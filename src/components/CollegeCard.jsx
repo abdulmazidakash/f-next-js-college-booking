@@ -6,7 +6,7 @@ import { FaStar, FaCalendarAlt, FaBookOpen, FaUniversity, FaFutbol, FaCalendarCh
 import Image from "next/image";
 
 export default function CollegeCard({ college }) {
-  const pathname = usePathname(); // check current route
+  const pathname = usePathname();
 
   return (
     <div className="border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow flex flex-col p-2 bg-white">

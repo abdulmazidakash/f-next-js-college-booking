@@ -20,7 +20,6 @@ export async function GET(request) {
       return new Response(JSON.stringify({ error: "Email parameter is required." }), { status: 400 });
     }
 
-    // --- FIX: Await dbConnect here ---
     const admissionCollection = await dbConnect(collectionNameObject.admissionCollection);
     
     // Find admissions where the email matches the user's email

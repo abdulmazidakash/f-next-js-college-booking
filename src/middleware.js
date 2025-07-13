@@ -15,6 +15,7 @@ export const config = {
 	matcher: [
 		'/admission',
 		'/my-college/:path*',
-		'/add-college/:path*'
+		'/add-college/:path*',
+		'/profile',
 	],
 }
