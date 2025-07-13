@@ -1,10 +1,9 @@
 // app/reset-password/page.js
-"use client"; // This is a client component
+"use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation"; // For accessing URL params and routing
-import toast from "react-hot-toast"; // For notifications
-import Link from "next/link"; // For linking back to login
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast"; 
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -13,7 +12,7 @@ export default function ResetPasswordPage() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [loading, setLoading] = useState(false);
   const [isValidToken, setIsValidToken] = useState(false); // State to track if token is present
   const [tokenChecked, setTokenChecked] = useState(false); // State to ensure token check is done
 
@@ -90,8 +89,8 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md border border-gray-200">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Reset Password</h2>
+      <div className="w-full max-w-md p-8 bg-gradient-to-br from-white via-purple-50 to-pink-50 rounded-lg shadow-md border border-gray-200">
+        <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 bg-clip-text text-transparent mb-6">Reset Password</h2>
         <p className="text-center text-gray-600 mb-6">
           Enter your new password below.
         </p>
@@ -131,8 +130,8 @@ export default function ResetPasswordPage() {
           <button
             type="submit"
             disabled={loading} // Disable button while loading
-            className={`w-full px-4 py-2 rounded-md font-semibold text-white transition-colors duration-200 ${
-              loading ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+            className={`w-full px-4 py-2 rounded-md font-semibold text-white transition-colors cursor-pointer duration-200 ${
+              loading ? "bg-button-bg cursor-not-allowed" : "bg-button-bg hover:bg-button-bg"
             }`}
           >
             {loading ? "Resetting..." : "Reset Password"}

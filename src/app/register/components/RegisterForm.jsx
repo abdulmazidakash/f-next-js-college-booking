@@ -8,6 +8,7 @@ import SocialLogin from "@/app/login/components/SocialLogin";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react"; // Import signIn from next-auth/react
+import { FaSchoolFlag } from "react-icons/fa6";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -80,7 +81,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-lg p-6 sm:p-8 bg-section-bg rounded-lg shadow space-y-4 border border-gray-300"
+      className="w-full max-w-lg p-6 sm:p-8 bg-section-bg rounded-lg space-y-4 border border-gray-300"
     >
       <h2 className="text-xl bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent font-bold text-center mb-4">Create Your Account</h2>
 
@@ -178,6 +179,7 @@ export default function RegisterForm() {
           Login
         </Link>
       </p>
+            <h2 className="flex text-center justify-center items-center gap-2 text-xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent mb-4"><FaSchoolFlag className="text-button-bg" /> College Booking</h2>
     </form>
   );
 }
