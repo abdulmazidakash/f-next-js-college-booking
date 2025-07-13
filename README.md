@@ -7,6 +7,14 @@ A full-stack web application built with **Next.js**, **MongoDB**, **Tailwind CSS
 
 ---
 
+## 🖼️ Project UI Preview
+
+![Project UI Screenshot](https://your-screenshot-link.com/preview.png)
+
+> Replace the above link with an actual screenshot from your deployed app or UI demo.
+
+---
+
 ## 📑 Table of Contents
 
 - [🔍 Project Overview](#-project-overview)
@@ -98,14 +106,20 @@ npm run dev
 
 ## 🛠️ Usage
 
-1. Visit `/register` to create a new user account.
-2. Use `/login` to sign in with Google or email.
+1. Visit `/register` to create a new user account, or use the test account:
+
+   * 👤 **Email:** `student@gmail.com`
+   * 🔐 **Password:** `Pa$$w0rd`
+
+2. Use `/login` to sign in.
+
 3. Navigate through:
 
    * `/colleges`: browse college listings
    * `/admission`: submit application form
    * `/my-college`: view booked colleges and add reviews
    * `/profile`: view and edit your profile
+
 4. Use the search bar on the home page to find colleges.
 
 ---
@@ -191,8 +205,8 @@ EMAIL_FROM=your@email.com
 
 | Problem                | Solution                                          |
 | ---------------------- | ------------------------------------------------- |
-| MongoDB not connecting | Check your MONGODB\_URI in `.env.local`           |
-| Auth not working       | Verify NEXTAUTH\_SECRET and NEXTAUTH\_URL         |
+| MongoDB not connecting | Check your `MONGODB_URI` in `.env.local`          |
+| Auth not working       | Verify `NEXTAUTH_SECRET` and `NEXTAUTH_URL`       |
 | Email not sending      | Ensure `nodemailer` config in `.env.local` is set |
 | Vercel upload issues   | Use ImgBB or Cloudinary for image handling        |
 
@@ -213,3 +227,11 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 💡 **Inspired by** the design of [Livi](https://livi.wpengine.com/) for modern education and admissions platforms.
+
+```
+
+## 🖼️ Project UI Preview
+
+![UI Preview](./public/college-booking.png)
+---
+
