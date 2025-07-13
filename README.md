@@ -1,104 +1,217 @@
-Next.js College Booking Application🚀 Live DemoExplore the live application here: https://next-js-college-booking.vercel.app/✨ Overviewnext-js-college-booking is a full-stack web application built with Next.js, Node.js, and MongoDB (MERN stack) that provides a user-friendly interface for booking college services and facilities. It features comprehensive college listings, an admission application process, user authentication (email/password, Google, GitHub), user profiles, and a review system.🌟 FeaturesThis application is designed to meet the following requirements:College Booking Facilities: Core functionality for users to book college services.Intuitive Navigation: A clear navigation bar with Home, Colleges, Admission, and My College sections.Dynamic Home Page:College Search: A prominent search field to find colleges by name.Featured Colleges: A dedicated section showcasing 3 college cards with essential details (image, name, admission dates, events, research history, sports).Detailed College View: Clicking "Details" on a college card navigates to a comprehensive page displaying detailed information including images, admission process, event details, research works, and sports categories.Image Gallery: A visual section featuring group pictures of college graduates.Research Highlights: Links to recommended research papers by college students.Student Reviews: A section where users can view feedback and reviews about specific colleges.Dedicated Routes:/colleges: Displays a list of all colleges (minimum 5-6 cards) with image, name, rating, admission date, research count, and a "Details" button./admission: Presents a list of colleges, and upon selection, reveals an admission form with fields for Candidate Name, Subject, Email, Phone, Address, Date of Birth, and an Image upload./my-college: After submitting an admission, users can view their application details and add/edit a review with a rating option. Reviews are reflected on the home page.Robust Authentication System:Multiple Login Options: Supports registration and login via Email/Password, Google, and GitHub authentication.Password Reset: Functionality to reset forgotten passwords.Access Control: College details and review submission are restricted to logged-in users.Personalized User Profile:Displays the logged-in user's profile name.Clicking the profile name navigates to a dedicated profile route.Profile Editing: Users can edit their Name, Email, University, and Address, with changes being saved and updated.Responsive Design: Fully responsive UI, ensuring a flawless experience across desktops, tablets, and mobile phones.Custom 404 Page: A creatively designed 404 "Not Found" route.🛠️ Technologies UsedThe project leverages the following technologies:Frontend:Next.js 15.3.5 - React framework for production.React 19.0.0 - JavaScript library for building user interfaces.Tailwind CSS 4.1.11 - A utility-first CSS framework for rapid UI development.DaisyUI 5.0.46 - Tailwind CSS component library.React Icons 5.5.0 - Popular icon library for React.React Hot Toast 2.5.2 - For beautiful, accessible, and customizable toasts.Swiper 11.2.10 - Modern touch slider (if implemented for galleries/carousels).Backend & Database:Node.js - JavaScript runtime environment.MongoDB 6.17.0 - NoSQL database.Mongoose (Implicitly used via dbConnect for MongoDB interactions)NextAuth.js 4.24.11 - Authentication for Next.js applications.Bcrypt 6.0.0 - For password hashing.Nodemailer 6.10.1- For sending emails (e.g., password reset).ImgBB - Image hosting service for user uploads.Deployment:Vercel - Platform for frontend frameworks and static sites.📂 Folder Structure.
+```markdown
+# 🎓 Next.js College Booking
+
+A full-stack web application built with **Next.js**, **MongoDB**, **Tailwind CSS**, and **NextAuth.js** that allows users to browse colleges, book admissions, manage their profiles, and leave reviews. Designed for an intuitive and responsive user experience with full authentication and CRUD functionalities.
+
+🌐 **Live Site:** [https://next-js-college-booking.vercel.app/](https://next-js-college-booking.vercel.app/)
+
+---
+
+## 📑 Table of Contents
+
+- [🔍 Project Overview](#-project-overview)
+- [🚀 Features](#-features)
+- [📁 Folder Structure](#-folder-structure)
+- [⚙️ Installation](#️-installation)
+- [🛠️ Usage](#️-usage)
+- [🔐 Authentication](#-authentication)
+- [🎨 UI & Design](#-ui--design)
+- [📦 Dependencies](#-dependencies)
+- [⚙️ Configuration](#️-configuration)
+- [🧪 Examples](#-examples)
+- [🐞 Troubleshooting](#-troubleshooting)
+- [👥 Contributors](#-contributors)
+- [📄 License](#-license)
+
+---
+
+## 🔍 Project Overview
+
+The **Next.js College Booking** system is a web application for users to search, view, and book college admission services. It includes dynamic routes, user authentication (email, Google, and social login), and CRUD operations on user profiles and reviews.
+
+**Goal:** Build a modern, mobile-friendly, responsive college booking portal with real-world usability, inspired by [Livi UI](https://livi.wpengine.com/).
+
+---
+
+## 🚀 Features
+
+- 🔍 College search functionality with dynamic display
+- 📚 College listing with image, admission dates, events, and sports info
+- 📄 College details with full breakdown of offerings
+- 📥 Admission form with fields: name, subject, contact, DoB, etc.
+- 🧾 My College page for tracking applications and leaving reviews
+- 🔒 Auth with Google, email/password, social login
+- 🔁 Password reset and secure login/logout
+- 👤 Profile edit (name, email, university, address)
+- 🌟 Ratings and reviews system
+- 📷 College image gallery & student research papers section
+- ❌ Custom 404 page
+- 📱 Fully responsive design
+
+---
+
+## 📁 Folder Structure
+
+```
+
 ├── public/
-│   ├── uploads/          # Directory for uploaded images (not used on Vercel, replaced by ImgBB)
-│   └── ...               # Static assets like default images, favicon
+│   ├── uploads/              # (For local uploads)
 ├── src/
 │   ├── app/
-│   │   ├── actions/      # Server Actions (e.g., auth actions like registerUser, loginUser)
-│   │   │   └── auth/
-│   │   │       ├── loginUser.js
-│   │   │       └── registerUser.js
-│   │   ├── api/          # Next.js API Routes
-│   │   │   ├── admission/
-│   │   │   │   └── route.js
-│   │   │   ├── auth/
-│   │   │   │   └── [...nextauth]/
-│   │   │   │       └── route.js
-│   │   │   ├── colleges/
-│   │   │   │   └── route.js
-│   │   │   ├── my-admissions/ # API to fetch user's admission
-│   │   │   │   └── route.js
-│   │   │   ├── reviews/
-│   │   │   │   └── route.js
-│   │   │   └── users/      # API for user profile updates
-│   │   │       └── route.js
-│   │   ├── components/   # Reusable React components (e.g., CollegeCard, Navbar, Footer)
-│   │   │   ├── auth/
-│   │   │   │   └── SocialLogin.jsx
-│   │   │   ├── CollegeCard.jsx
-│   │   │   └── ...
-│   │   ├── lib/          # Utility functions and configurations
-│   │   │   ├── authOptions.js # NextAuth.js configuration
-│   │   │   ├── dbConnect.js   # MongoDB connection setup
-│   │   │   └── ...
-│   │   ├── (routes)/     # Top-level pages/routes
-│   │   │   ├── page.js (Home)
-│   │   │   ├── colleges/
-│   │   │   │   ├── [collegeId]/ # Dynamic route for college details
-│   │   │   │   │   └── page.js
-│   │   │   │   └── page.js (All Colleges)
-│   │   │   ├── admission/
-│   │   │   │   └── page.js
-│   │   │   ├── my-college/
-│   │   │   │   └── page.js
-│   │   │   ├── login/
-│   │   │   │   └── page.js
-│   │   │   ├── register/
-│   │   │   │   ├── components/
-│   │   │   │   │   └── RegisterForm.jsx
-│   │   │   │   └── page.js
-│   │   │   ├── profile/
-│   │   │   │   └── page.js
-│   │   │   ├── forgot-password/
-│   │   │   │   └── page.js
-│   │   │   ├── reset-password/
-│   │   │   │   └── page.js
-│   │   │   └── not-found.js (404 page)
-│   │   ├── globals.css   # Global CSS styles
-│   │   └── layout.js     # Root layout for Next.js
-│   └── ...
-├── .env.local            # Environment variables (local development)
-├── next.config.mjs       # Next.js configuration
-├── package.json          # Project dependencies and scripts
-├── postcss.config.mjs    # PostCSS configuration
-├── tailwind.config.js    # Tailwind CSS configuration
-└── README.md             # Project README file
-⚙️ Getting StartedFollow these steps to set up and run the project locally.PrerequisitesNode.js (v18 or higher recommended)npm or YarnMongoDB Atlas account (or a local MongoDB instance)ImgBB API Key (for image uploads)Google & GitHub OAuth Credentials (for social login)InstallationClone the repository:git clone <repository_url>
+│   │   ├── actions/          # Server Actions (e.g., login/register)
+│   │   ├── api/              # API Routes (auth, admissions, reviews)
+│   │   ├── components/       # Reusable UI components
+│   │   ├── lib/              # DB & auth utilities
+│   │   ├── (routes)/         # App pages: home, admission, colleges, etc.
+│   │   ├── globals.css       # Global styles
+│   │   └── layout.js         # Main layout wrapper
+├── .env.local                # Local environment variables
+├── next.config.mjs           # Next.js configuration
+├── tailwind.config.js        # Tailwind CSS configuration
+├── postcss.config.mjs        # PostCSS configuration
+├── package.json              # Project metadata and dependencies
+└── README.md                 # You're reading it!
+
+````
+
+---
+
+## ⚙️ Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/next-js-college-booking.git
 cd next-js-college-booking
-Install dependencies:npm install
-# or
-yarn install
-Environment VariablesCreate a .env.local file in the root of your project and add the following environment variables. Replace the placeholder values with your actual credentials.# MongoDB Connection
-MONGODB_URI=mongodb+srv://your_username:your_password@your_cluster.mongodb.net/college-db?retryWrites=true&w=majority&appName=Cluster0
-DB_NAME=college-db
 
-# NextAuth.js Configuration
-NEXTAUTH_SECRET=a_long_random_string_for_nextauth_secret # Generate a strong secret
-GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET
-GITHUB_ID=YOUR_GITHUB_ID
-GITHUB_SECRET=YOUR_GITHUB_SECRET
+# Install dependencies
+npm install
 
-# Email Service (for password reset)
-EMAIL_SERVER_HOST=smtp.gmail.com
-EMAIL_SERVER_PORT=587
-EMAIL_SERVER_USER=your_email@gmail.com
-EMAIL_SERVER_PASSWORD=your_app_password # Use an app password if using Gmail
-EMAIL_FROM=your_email@gmail.com
+# Setup environment variables
+cp .env.example .env.local
+# Fill in your MongoDB URI, JWT_SECRET, EMAIL_SERVER, etc.
 
-# ImgBB API Key for Image Uploads
-IMGBB_API_KEY=YOUR_IMGBB_API_KEY
+# Run the development server
+npm run dev
+````
 
-# Application Base URL (for local development)
-APP_BASE_URL=http://localhost:3000
-NEXT_API_URL=http://localhost:3000
-MONGODB_URI: Get this from your MongoDB Atlas cluster. Ensure college-db is the database name.NEXTAUTH_SECRET: Generate a strong random string (e.g., using openssl rand -base64 32).GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET: Obtain from Google Cloud Console (OAuth 2.0 Client IDs).GITHUB_ID, GITHUB_SECRET: Obtain from GitHub Developer Settings (OAuth Apps).EMAIL_SERVER_USER, EMAIL_SERVER_PASSWORD: Your email credentials for sending password reset emails. For Gmail, you'll need to generate an App Password.IMGBB_API_KEY: Get this from ImgBB API.Running the Development Servernpm run dev
-# or
-yarn dev
-Open http://localhost:3000 in your browser to see the application.Building for Productionnpm run build
-# or
-yarn build
-Running in Production Modenpm run start
-# or
-yarn start
-🔑 Test User CredentialsYou can use the following credentials to test the login and registration functionality:Email: testuser@example.comPassword: password123Feel free to register new accounts using the registration form.🚀 DeploymentThis project is configured for deployment on Vercel.Important for Vercel Deployment:Ensure all environment variables listed in the "Environment Variables" section above are also configured in your Vercel project settings (Project Settings > Environment Variables). For NEXT_API_URL and APP_BASE_URL, set their values to your Vercel deployment URL (e.g., https://your-project-name.vercel.app).🎨 UI InspirationThe UI design draws inspiration from:https://livi.wpengine.com/🤝 ContributingFeel free to fork the repository, open issues, or submit pull requests.📄 LicenseThis project is open-source and available under the MIT License.Next.js College Booking - Find
+---
+
+## 🛠️ Usage
+
+1. Visit `/register` to create a new user account.
+2. Use `/login` to sign in with Google or email.
+3. Navigate through:
+
+   * `/colleges`: browse college listings
+   * `/admission`: submit application form
+   * `/my-college`: view booked colleges and add reviews
+   * `/profile`: view and edit your profile
+4. Use the search bar on the home page to find colleges.
+
+---
+
+## 🔐 Authentication
+
+Implemented via **NextAuth.js** with:
+
+* 📧 Email/Password login
+* 🔗 Google OAuth login
+* 🔁 Password reset flow
+* 🔒 Protected routes (e.g., `/my-college`, `/profile`)
+
+Only authenticated users can:
+
+* View full college details
+* Submit admission forms
+* Post reviews
+* Edit personal profiles
+
+---
+
+## 🎨 UI & Design
+
+* Tailwind CSS with **DaisyUI** components
+* Inspired by: [Livi - College Booking UI](https://livi.wpengine.com/)
+* Fully responsive (mobile, tablet, desktop)
+* Swiper carousel for galleries and testimonials
+* Clean and intuitive user interface
+
+---
+
+## 📦 Dependencies
+
+### Core
+
+* `next` `15.3.5`
+* `react` `19.0.0`
+* `mongodb` `6.17.0`
+* `next-auth` `4.24.11`
+* `nodemailer` `6.10.1`
+* `bcrypt` `6.0.0`
+
+### UI & UX
+
+* `tailwindcss` `4.1.11`
+* `daisyui` `5.0.46`
+* `react-icons`, `swiper`, `react-hot-toast`
+
+### Dev
+
+* `eslint`, `eslint-config-next`, `@eslint/eslintrc`
+
+---
+
+## ⚙️ Configuration
+
+Create a `.env.local` file with:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_secret_key
+NEXTAUTH_URL=http://localhost:3000
+EMAIL_SERVER=smtp://username:password@smtp.mailserver.com:587
+EMAIL_FROM=your@email.com
+```
+
+> For image hosting, use ImgBB or an external image service, as Vercel does not support local image uploads.
+
+---
+
+## 🧪 Examples
+
+* Try searching for a college in the search bar
+* Submit an admission form under the “Admission” route
+* Post a review from “My College”
+* Edit your profile from the dropdown menu
+* Check out the research paper section on the homepage
+
+---
+
+## 🐞 Troubleshooting
+
+| Problem                | Solution                                          |
+| ---------------------- | ------------------------------------------------- |
+| MongoDB not connecting | Check your MONGODB\_URI in `.env.local`           |
+| Auth not working       | Verify NEXTAUTH\_SECRET and NEXTAUTH\_URL         |
+| Email not sending      | Ensure `nodemailer` config in `.env.local` is set |
+| Vercel upload issues   | Use ImgBB or Cloudinary for image handling        |
+
+---
+
+## 👥 Contributors
+
+* 🧑‍💻 **Your Name** – Full Stack Developer
+
+> Feel free to open issues or pull requests to contribute!
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+💡 **Inspired by** the design of [Livi](https://livi.wpengine.com/) for modern education and admissions platforms.
+
+```
